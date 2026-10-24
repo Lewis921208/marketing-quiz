@@ -1,0 +1,2446 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>行銷管理期中考刷題系統</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --border: #e2e8f0;
+      --border-strong: #cbd5e1;
+      --text: #0f172a;
+      --text-muted: #475569;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --success: #16a34a;
+      --success-bg: #dcfce7;
+      --warning: #d97706;
+      --warning-bg: #fef3c7;
+      --danger: #dc2626;
+      --danger-bg: #fee2e2;
+      --neutral-bg: #f1f5f9;
+      --radius: 10px;
+      --shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .nav-container {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 0.85rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand h1 {
+      font-size: 1.15rem;
+      margin: 0;
+      font-weight: 700;
+    }
+
+    .meta-pill {
+      font-size: 0.8rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      background: var(--neutral-bg);
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    nav {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      color: var(--text-muted);
+      padding: 0.45rem 0.9rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.92rem;
+      transition: all 0.15s ease;
+    }
+
+    .nav-link:hover {
+      background: var(--neutral-bg);
+      color: var(--text);
+    }
+
+    .nav-link.active {
+      background: var(--primary);
+      color: #ffffff;
+    }
+
+    main {
+      max-width: 1040px;
+      margin: 1.5rem auto 3rem;
+      padding: 0 1.25rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.35rem;
+      box-shadow: var(--shadow);
+      margin-bottom: 1.25rem;
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.85rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .toolbar-group {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+
+    select, input[type="number"], textarea {
+      font-family: inherit;
+      font-size: 0.95rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.45rem 0.65rem;
+      background: #fff;
+      color: var(--text);
+    }
+
+    select:focus, input[type="number"]:focus, textarea:focus {
+      outline: 2px solid var(--primary);
+      outline-offset: -1px;
+    }
+
+    button {
+      font-family: inherit;
+      font-size: 0.92rem;
+      font-weight: 600;
+      padding: 0.55rem 1rem;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: var(--primary-hover);
+    }
+
+    .btn-secondary {
+      background: var(--neutral-bg);
+      color: var(--text);
+      border-color: var(--border);
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      background: #e2e8f0;
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text-muted);
+      border-color: var(--border);
+    }
+
+    .btn-outline:hover:not(:disabled) {
+      background: var(--neutral-bg);
+      color: var(--text);
+    }
+
+    .btn-danger {
+      background: var(--danger-bg);
+      color: var(--danger);
+      border-color: #fecaca;
+    }
+
+    .btn-danger:hover:not(:disabled) {
+      background: #fecaca;
+    }
+
+    .topic-header {
+      display: flex;
+      align-items: baseline;
+      gap: 0.6rem;
+      margin-bottom: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .chapter-badge {
+      background: #dbeafe;
+      color: #1e40af;
+      font-weight: 700;
+      font-size: 0.8rem;
+      padding: 0.2rem 0.55rem;
+      border-radius: 6px;
+    }
+
+    .topic-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    /* 歷屆考題清單 */
+    .prompt-box {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--primary);
+      padding: 0.9rem 1.15rem;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 1.1rem;
+    }
+
+    .prompt-header {
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 0.55rem;
+    }
+
+    .prompt-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .prompt-item {
+      display: flex;
+      align-items: baseline;
+      gap: 0.6rem;
+      font-size: 0.98rem;
+      font-weight: 600;
+      line-height: 1.5;
+    }
+
+    .year-badge {
+      background: #e0e7ff;
+      color: #3730a3;
+      font-size: 0.76rem;
+      font-weight: 700;
+      padding: 0.12rem 0.5rem;
+      border-radius: 4px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    /* 作答編輯器與畫表格工具列 */
+    .editor-wrapper {
+      border: 1px solid var(--border-strong);
+      border-radius: 8px;
+      background: #fff;
+      overflow: visible;
+    }
+
+    .editor-wrapper:focus-within {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+    }
+
+    .editor-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      padding: 0.5rem 0.75rem;
+      background: #f8fafc;
+      border-bottom: 1px solid var(--border);
+      border-radius: 8px 8px 0 0;
+    }
+
+    .editor-toolbar-left,
+    .editor-toolbar-right {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .tool-btn {
+      font-size: 0.82rem;
+      padding: 0.32rem 0.62rem;
+      border-radius: 6px;
+      background: #fff;
+      color: var(--text);
+      border: 1px solid var(--border-strong);
+      font-weight: 600;
+    }
+
+    .tool-btn:hover:not(:disabled) {
+      background: #e2e8f0;
+    }
+
+    .tool-btn-primary {
+      background: #eff6ff;
+      color: #1d4ed8;
+      border-color: #bfdbfe;
+    }
+
+    .tool-btn-primary:hover:not(:disabled) {
+      background: #dbeafe;
+    }
+
+    .tool-divider {
+      width: 1px;
+      height: 20px;
+      background: var(--border-strong);
+      margin: 0 0.2rem;
+    }
+
+    .dim-input {
+      width: 52px;
+      padding: 0.22rem 0.4rem !important;
+      font-size: 0.82rem !important;
+      text-align: center;
+      border-radius: 6px !important;
+    }
+
+    /* 視覺化畫表格格網 Popover */
+    .grid-picker-wrap {
+      position: relative;
+      display: inline-block;
+    }
+
+    .grid-picker-popover {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      z-index: 50;
+      background: #fff;
+      border: 1px solid var(--border-strong);
+      border-radius: 8px;
+      padding: 0.65rem;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.14);
+      width: max-content;
+    }
+
+    .grid-picker-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+      text-align: center;
+    }
+
+    .grid-picker-cells {
+      display: grid;
+      grid-template-columns: repeat(6, 22px);
+      gap: 4px;
+    }
+
+    .grid-picker-cell {
+      width: 22px;
+      height: 22px;
+      border: 1px solid #cbd5e1;
+      border-radius: 3px;
+      background: #f8fafc;
+      cursor: pointer;
+    }
+
+    .grid-picker-cell.active {
+      background: #bfdbfe;
+      border-color: var(--primary);
+    }
+
+    .answer-editor {
+      width: 100%;
+      min-height: 230px;
+      padding: 0.9rem;
+      font-size: 0.98rem;
+      line-height: 1.65;
+      outline: none;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .answer-editor:empty::before {
+      content: attr(data-placeholder);
+      color: #94a3b8;
+      pointer-events: none;
+    }
+
+    /* 使用者作答區與標準答案區的表格樣式 */
+    .user-answer-table,
+    .std-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0.65rem 0;
+      font-size: 0.94rem;
+      background: #fff;
+    }
+
+    .user-answer-table th,
+    .user-answer-table td,
+    .std-table th,
+    .std-table td {
+      border: 1px solid #94a3b8;
+      padding: 0.5rem 0.65rem;
+      vertical-align: top;
+      text-align: left;
+      min-width: 70px;
+    }
+
+    .user-answer-table th,
+    .std-table th {
+      background: #f1f5f9;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .user-answer-table td:focus,
+    .user-answer-table th:focus {
+      background: #eff6ff;
+      outline: 2px solid var(--primary);
+      outline-offset: -2px;
+    }
+
+    .editor-line {
+      min-height: 1.5em;
+    }
+
+    .input-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 0.65rem;
+    }
+
+    .char-counter {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.22rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .badge-success {
+      background: var(--success-bg);
+      color: var(--success);
+    }
+
+    .badge-warning {
+      background: var(--warning-bg);
+      color: var(--warning);
+    }
+
+    .badge-danger {
+      background: var(--danger-bg);
+      color: var(--danger);
+    }
+
+    .badge-neutral {
+      background: var(--neutral-bg);
+      color: var(--text-muted);
+    }
+
+    .result-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .score-display {
+      font-size: 1.65rem;
+      font-weight: 800;
+    }
+
+    .diff-legend {
+      display: flex;
+      gap: 1rem;
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      margin-bottom: 0.6rem;
+      flex-wrap: wrap;
+    }
+
+    .diff-container {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      line-height: 1.85;
+      font-size: 0.98rem;
+      word-break: break-all;
+    }
+
+    .diff-missing {
+      background: #fee2e2;
+      color: #b91c1c;
+      padding: 0.05rem 0.15rem;
+      border-radius: 3px;
+      font-weight: 600;
+      border-bottom: 2px solid #ef4444;
+    }
+
+    .diff-extra {
+      background: #fef3c7;
+      color: #92400e;
+      text-decoration: line-through;
+      padding: 0.05rem 0.15rem;
+      border-radius: 3px;
+    }
+
+    .standard-answer-box {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.1rem 1.2rem;
+      font-size: 0.96rem;
+      line-height: 1.75;
+      margin-top: 0.65rem;
+    }
+
+    .std-para {
+      margin: 0 0 0.55rem 0;
+    }
+
+    .std-para:last-child {
+      margin-bottom: 0;
+    }
+
+    .std-subitem {
+      padding-left: 1.25rem;
+      margin: 0.25rem 0;
+    }
+
+    .std-formula {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.6rem 0.9rem;
+      margin: 0.6rem 0;
+      font-weight: 600;
+      font-family: "Cambria Math", "Times New Roman", serif;
+      font-size: 1.05rem;
+    }
+
+    .answer-images {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      margin-top: 1rem;
+    }
+
+    .answer-images img {
+      max-width: 100%;
+      height: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .rating-panel {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-top: 1rem;
+    }
+
+    .rating-buttons {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-rate {
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--text);
+      min-width: 88px;
+      justify-content: center;
+    }
+
+    .btn-rate[data-rating="familiar"].selected {
+      background: var(--success);
+      color: #fff;
+      border-color: var(--success);
+    }
+
+    .btn-rate[data-rating="normal"].selected {
+      background: var(--warning);
+      color: #fff;
+      border-color: var(--warning);
+    }
+
+    .btn-rate[data-rating="unfamiliar"].selected {
+      background: var(--danger);
+      color: #fff;
+      border-color: var(--danger);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 0.85rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem 1.15rem;
+      box-shadow: var(--shadow);
+    }
+
+    .stat-label {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 0.25rem;
+    }
+
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: 800;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+    }
+
+    #dashboard-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+    }
+
+    #dashboard-table th,
+    #dashboard-table td {
+      text-align: left;
+      padding: 0.75rem 0.65rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    #dashboard-table th {
+      font-weight: 700;
+      color: var(--text-muted);
+      background: #f8fafc;
+      white-space: nowrap;
+    }
+
+    #dashboard-table tr:hover td {
+      background: #f8fafc;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .notice-banner {
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .notice-warning {
+      background: var(--warning-bg);
+      color: #92400e;
+      border: 1px solid #fde68a;
+    }
+
+    .settings-section {
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .settings-section:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    .settings-section h3 {
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+      font-size: 1.05rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav-container">
+      <div class="brand">
+        <h1>行銷管理期中考刷題系統</h1>
+        <span id="nav-bank-badge" class="meta-pill">載入題庫中...</span>
+        <span id="nav-threshold-badge" class="meta-pill">門檻：90%</span>
+      </div>
+      <nav>
+        <a href="#/practice" id="tab-practice" class="nav-link">練習</a>
+        <a href="#/dashboard" id="tab-dashboard" class="nav-link">Dashboard</a>
+        <a href="#/settings" id="tab-settings" class="nav-link">設定</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- 練習畫面 -->
+    <section id="view-practice" class="hidden">
+      <div class="card">
+        <div class="toolbar">
+          <div class="toolbar-group">
+            <span id="practice-mode-badge" class="badge badge-neutral">一般模式（弱點優先）</span>
+            <button id="btn-exit-review" class="btn-outline hidden" type="button">返回全部題庫</button>
+          </div>
+          <div class="toolbar-group">
+            <label for="question-select" style="font-size:0.88rem;color:var(--text-muted);">切換主題：</label>
+            <select id="question-select"></select>
+          </div>
+        </div>
+
+        <div id="practice-empty" class="hidden" style="text-align:center;padding:2rem 1rem;">
+          <p style="font-size:1.05rem;font-weight:600;margin-bottom:1rem;">目前沒有符合「不熟＋一般」篩選條件的主題！</p>
+          <button id="btn-empty-back" class="btn-primary" type="button">切換回全部題庫</button>
+        </div>
+
+        <div id="practice-content">
+          <div class="topic-header">
+            <span id="q-chapter" class="chapter-badge">Ch1</span>
+            <h2 id="q-title" class="topic-title">1-1 主題名稱</h2>
+          </div>
+
+          <!-- 一次列出所有歷屆考古題問法 -->
+          <div class="prompt-box">
+            <div id="q-prompt-header" class="prompt-header">歷屆考古題問法</div>
+            <ul id="q-prompt-list" class="prompt-list"></ul>
+          </div>
+
+          <!-- 作答區（含畫表格工具列） -->
+          <div class="editor-wrapper">
+            <div class="editor-toolbar" role="toolbar" aria-label="作答與表格工具列">
+              <div class="editor-toolbar-left">
+                <div class="grid-picker-wrap">
+                  <button id="btn-toggle-grid" class="tool-btn tool-btn-primary" type="button" title="用滑鼠拉選列×欄快速畫表格">
+                    📊 畫表格 ▾
+                  </button>
+                  <div id="grid-picker-popover" class="grid-picker-popover hidden">
+                    <div id="grid-picker-label" class="grid-picker-label">選擇表格大小：3 列 × 3 欄</div>
+                    <div id="grid-picker-cells" class="grid-picker-cells"></div>
+                  </div>
+                </div>
+
+                <span style="font-size:0.8rem;color:var(--text-muted);">或</span>
+                <input id="tbl-rows-input" class="dim-input" type="number" min="1" max="25" value="4" title="表格列數" />
+                <span style="font-size:0.8rem;color:var(--text-muted);">列 ×</span>
+                <input id="tbl-cols-input" class="dim-input" type="number" min="1" max="10" value="3" title="表格欄數" />
+                <span style="font-size:0.8rem;color:var(--text-muted);">欄</span>
+                <button id="btn-insert-table" class="tool-btn tool-btn-primary" type="button">＋ 插入表格</button>
+
+                <span class="tool-divider"></span>
+
+                <button id="btn-add-row" class="tool-btn" type="button" title="在下方新增一列">＋ 新增列</button>
+                <button id="btn-add-col" class="tool-btn" type="button" title="在右側新增一欄">＋ 新增欄</button>
+                <button id="btn-del-row" class="tool-btn" type="button" title="刪除目前所在列">－ 刪除列</button>
+                <button id="btn-del-col" class="tool-btn" type="button" title="刪除目前所在欄">－ 刪除欄</button>
+                <button id="btn-del-table" class="tool-btn" type="button" title="刪除整張表格">🗑 刪表</button>
+              </div>
+              <div class="editor-toolbar-right">
+                <button id="btn-clear-editor" class="tool-btn" type="button">清空作答</button>
+              </div>
+            </div>
+
+            <div
+              id="answer-input"
+              class="answer-editor"
+              contenteditable="true"
+              data-placeholder="請手打輸入課本標準答案；若題目含比較表，可點擊上方「📊 畫表格 / ＋ 插入表格」直接畫表填寫（儲存格內按 Tab 可跳下一格）..."
+            ></div>
+          </div>
+
+          <div class="input-footer">
+            <div id="char-counter" class="char-counter">已輸入 0 字（正規化 0 字 / 標準答案 0 字）</div>
+            <div class="action-buttons">
+              <button id="btn-reveal" class="btn-secondary" type="button" aria-expanded="false">顯示答案 ▾</button>
+              <button id="btn-submit" class="btn-primary" type="button">送出</button>
+            </div>
+          </div>
+
+          <!-- 看過答案提示 -->
+          <div id="revealed-notice" class="notice-banner notice-warning hidden" style="margin-top:1rem;">
+            已顯示標準答案：本次作答記為「看過答案」，不計為通過，但仍可貼上或輸入答案測試比對分數並自評熟悉度。
+          </div>
+
+          <!-- 比對結果區 -->
+          <div id="result-box" class="hidden" style="margin-top:1.25rem;">
+            <div class="result-header">
+              <div style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;">
+                <span>比對分數：</span>
+                <span id="score-value" class="score-display">0%</span>
+                <span id="pass-badge" class="badge">未通過</span>
+              </div>
+              <div id="distance-info" style="font-size:0.85rem;color:var(--text-muted);"></div>
+            </div>
+
+            <div class="diff-legend">
+              <span>正常字：與課本一致</span>
+              <span><span class="diff-missing">紅底紅字</span>：課本標準答案有、你漏寫的字</span>
+              <span><del class="diff-extra">刪除線</del>：你多寫或寫錯的字</span>
+            </div>
+            <div id="diff-output" class="diff-container"></div>
+          </div>
+
+          <!-- 標準答案與圖片區 -->
+          <div id="standard-answer-section" class="hidden" style="margin-top:1.25rem;">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:0.5rem;">
+              <h3 style="margin:0;font-size:1rem;">課本標準答案</h3>
+              <button id="btn-copy-answer" class="btn-outline" type="button" style="padding:0.25rem 0.65rem;font-size:0.82rem;">複製標準答案</button>
+            </div>
+            <div id="standard-answer-text" class="standard-answer-box"></div>
+            <div id="standard-answer-images" class="answer-images"></div>
+          </div>
+
+          <!-- 自評與下一題 -->
+          <div id="rating-box" class="rating-panel hidden">
+            <div>
+              <div style="font-weight:700;font-size:0.95rem;margin-bottom:0.35rem;">自評本題熟悉度（必選，記錄進 Dashboard）：</div>
+              <div class="rating-buttons">
+                <button class="btn-rate" data-rating="familiar" type="button">熟悉</button>
+                <button class="btn-rate" data-rating="normal" type="button">一般</button>
+                <button class="btn-rate" data-rating="unfamiliar" type="button">不熟</button>
+              </div>
+              <div id="rating-saved-msg" style="font-size:0.82rem;color:var(--success);margin-top:0.4rem;" class="hidden"></div>
+            </div>
+            <div>
+              <button id="btn-next" class="btn-primary" type="button">下一題 →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dashboard 畫面 -->
+    <section id="view-dashboard" class="hidden">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">題庫總主題數</div>
+          <div id="stat-total" class="stat-value">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">已練習主題</div>
+          <div id="stat-practiced" class="stat-value">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">已通過主題（未看答案 ≥ 門檻）</div>
+          <div id="stat-passed" class="stat-value" style="color:var(--success);">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">待加強（不熟＋一般）</div>
+          <div id="stat-weak" class="stat-value" style="color:var(--danger);">0</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="toolbar">
+          <div class="toolbar-group">
+            <h2 style="margin:0;font-size:1.1rem;">主題弱點總覽</h2>
+            <span class="meta-pill">預設排序：弱點優先</span>
+          </div>
+          <div class="toolbar-group">
+            <label style="display:inline-flex;align-items:center;gap:0.4rem;font-size:0.9rem;cursor:pointer;">
+              <input type="checkbox" id="filter-unfamiliar" />
+              只顯示「不熟」
+            </label>
+            <button id="btn-review-weak" class="btn-primary" type="button">只複習不熟＋一般</button>
+          </div>
+        </div>
+
+        <div class="table-wrapper">
+          <table id="dashboard-table">
+            <thead>
+              <tr>
+                <th>章</th>
+                <th>主題</th>
+                <th>最近評級</th>
+                <th>最近 / 最高分</th>
+                <th>嘗試次數</th>
+                <th>是否看過答案</th>
+                <th>上次練習日</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody id="dashboard-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 設定畫面 -->
+    <section id="view-settings" class="hidden">
+      <div class="card">
+        <div class="settings-section">
+          <h3>通過門檻設定</h3>
+          <p style="font-size:0.9rem;color:var(--text-muted);margin-top:0;">
+            預設為 90%（字元層級 Levenshtein 相似度）。若未點擊「顯示答案」且分數達到此門檻即判定為通過。
+          </p>
+          <div style="display:flex;align-items:center;gap:0.65rem;flex-wrap:wrap;">
+            <label for="input-threshold" style="font-weight:600;">通過門檻 (%)：</label>
+            <input type="number" id="input-threshold" min="10" max="100" step="1" value="90" style="width:90px;" />
+            <button id="btn-save-threshold" class="btn-primary" type="button">儲存門檻</button>
+            <span id="threshold-saved-msg" style="font-size:0.85rem;color:var(--success);" class="hidden">已儲存！</span>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <h3>進度備份（匯出 / 匯入 JSON）</h3>
+          <p style="font-size:0.9rem;color:var(--text-muted);margin-top:0;">
+            練習紀錄儲存在此瀏覽器的 <code>localStorage</code>。可匯出 JSON 備份或還原至其他裝置。
+          </p>
+          <div style="display:flex;gap:0.65rem;flex-wrap:wrap;margin-bottom:0.85rem;">
+            <button id="btn-export-json" class="btn-secondary" type="button">下載 JSON 備份檔</button>
+            <label class="btn-secondary" style="cursor:pointer;">
+              從 JSON 檔案匯入
+              <input type="file" id="input-import-file" accept=".json,application/json" class="hidden" />
+            </label>
+          </div>
+          <textarea
+            id="backup-json-textarea"
+            rows="6"
+            style="width:100%;font-family:monospace;font-size:0.84rem;"
+            placeholder="亦可在此直接貼上備份 JSON 內容並點擊下方「從文字框匯入」..."
+          ></textarea>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:0.5rem;flex-wrap:wrap;gap:0.5rem;">
+            <button id="btn-import-text" class="btn-outline" type="button">從文字框匯入</button>
+            <span id="backup-status-msg" style="font-size:0.85rem;font-weight:600;"></span>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <h3>重置資料</h3>
+          <p style="font-size:0.9rem;color:var(--text-muted);margin-top:0;">
+            清除此瀏覽器中所有的作答與評級紀錄（不可復原，建議先匯出備份）。
+          </p>
+          <button id="btn-clear-records" class="btn-danger" type="button">清除所有練習紀錄</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 核心比對邏輯（供瀏覽器與 tests/similarity.test.mjs 共用） -->
+  <script id="similarity-core">
+    (function (root) {
+      function normalizeText(text) {
+        if (!text || typeof text !== 'string') return '';
+
+        // 1. 移除 Obsidian 圖片語法 ![[...]]
+        let s = text.replace(/!\[\[.*?\]\]/g, '');
+
+        // 2. 移除圖說行（*圖：...*）與 [!note] 補充區塊
+        const lines = [];
+        let inNoteCallout = false;
+        for (const rawLine of s.split(/\r?\n/)) {
+          const stripped = rawLine.trim();
+          if (/^>\s*\[!note\]/i.test(stripped)) {
+            inNoteCallout = true;
+            continue;
+          }
+          if (inNoteCallout) {
+            if (stripped.startsWith('>')) continue;
+            inNoteCallout = false;
+          }
+          if (/^\*?\s*圖[：:].*$/.test(stripped)) {
+            continue;
+          }
+          lines.push(rawLine);
+        }
+        s = lines.join('\n');
+
+        // 3. NFKC 全形 -> 半形
+        s = s.normalize('NFKC');
+
+        // 4. 移除行首列表編號（例如 "1. "、"- a. "）與行內 "(1)" 編號
+        s = s.replace(/^\s*(?:[-*>]+\s*)*(?:\d+\.|[a-zA-Z]\.)\s+/gm, '');
+        s = s.replace(/\(\d+\)/g, '');
+
+        // 5. 去掉所有 Markdown 符號、空白與標點，只保留中文字與英數字元
+        s = s.replace(/[^\u3400-\u4dbf\u4e00-\u9fffA-Za-z0-9]+/g, '');
+        return s;
+      }
+
+      function levenshteinDistance(a, b) {
+        const aChars = Array.from(a);
+        const bChars = Array.from(b);
+        const m = aChars.length;
+        const n = bChars.length;
+        if (m === 0) return n;
+        if (n === 0) return m;
+
+        let prev = new Int32Array(n + 1);
+        let curr = new Int32Array(n + 1);
+        for (let j = 0; j <= n; j++) prev[j] = j;
+
+        for (let i = 1; i <= m; i++) {
+          curr[0] = i;
+          const ca = aChars[i - 1];
+          for (let j = 1; j <= n; j++) {
+            const cost = ca === bChars[j - 1] ? 0 : 1;
+            const del = prev[j] + 1;
+            const ins = curr[j - 1] + 1;
+            const sub = prev[j - 1] + cost;
+            curr[j] = del < ins ? (del < sub ? del : sub) : (ins < sub ? ins : sub);
+          }
+          const tmp = prev;
+          prev = curr;
+          curr = tmp;
+        }
+        return prev[n];
+      }
+
+      function computeDiff(userNorm, answerNorm) {
+        const U = Array.from(userNorm || '');
+        const A = Array.from(answerNorm || '');
+        const n = U.length;
+        const m = A.length;
+
+        const width = n + 1;
+        const dp = new Int16Array((m + 1) * width);
+
+        for (let i = 1; i <= m; i++) {
+          const aChar = A[i - 1];
+          const rowOffset = i * width;
+          const prevOffset = (i - 1) * width;
+          for (let j = 1; j <= n; j++) {
+            if (aChar === U[j - 1]) {
+              dp[rowOffset + j] = dp[prevOffset + (j - 1)] + 1;
+            } else {
+              const up = dp[prevOffset + j];
+              const left = dp[rowOffset + (j - 1)];
+              dp[rowOffset + j] = up >= left ? up : left;
+            }
+          }
+        }
+
+        const ops = [];
+        let i = m;
+        let j = n;
+        while (i > 0 || j > 0) {
+          if (i > 0 && j > 0 && A[i - 1] === U[j - 1]) {
+            ops.push({ type: 'match', text: A[i - 1] });
+            i--;
+            j--;
+          } else if (i > 0 && (j === 0 || dp[(i - 1) * width + j] >= dp[i * width + (j - 1)])) {
+            ops.push({ type: 'missing', text: A[i - 1] });
+            i--;
+          } else {
+            ops.push({ type: 'extra', text: U[j - 1] });
+            j--;
+          }
+        }
+        ops.reverse();
+
+        const merged = [];
+        for (const op of ops) {
+          if (merged.length > 0 && merged[merged.length - 1].type === op.type) {
+            merged[merged.length - 1].text += op.text;
+          } else {
+            merged.push({ type: op.type, text: op.text });
+          }
+        }
+        return merged;
+      }
+
+      function calcSimilarity(userRaw, answerRaw, answerNormOverride) {
+        const userNorm = normalizeText(userRaw);
+        const answerNorm =
+          typeof answerNormOverride === 'string'
+            ? answerNormOverride
+            : normalizeText(answerRaw);
+
+        const maxLen = Math.max(userNorm.length, answerNorm.length);
+        if (maxLen === 0 || userNorm.length === 0) {
+          return {
+            score: 0,
+            percent: 0,
+            distance: answerNorm.length,
+            maxLen,
+            userNorm,
+            answerNorm,
+            diff: computeDiff(userNorm, answerNorm),
+          };
+        }
+
+        const distance = levenshteinDistance(userNorm, answerNorm);
+        const score = Math.max(0, 1 - distance / maxLen);
+        const percent = Math.round(score * 1000) / 10;
+
+        return {
+          score,
+          percent,
+          distance,
+          maxLen,
+          userNorm,
+          answerNorm,
+          diff: computeDiff(userNorm, answerNorm),
+        };
+      }
+
+      root.QuizSimilarity = {
+        normalizeText,
+        levenshteinDistance,
+        computeDiff,
+        calcSimilarity,
+      };
+    })(typeof globalThis !== 'undefined' ? globalThis : window);
+  </script>
+
+  <script id="questions-fallback" type="application/json">[{"id": "1-1", "chapter": "Ch1", "chapter_title": "Ch1 行銷導論", "title": "行銷觀念 vs 銷售觀念", "prompts": [{"year": "114-1", "text": "請列出行銷觀念與銷售觀念的差異及內涵（25%）", "raw": "114-1 請列出行銷觀念與銷售觀念的差異及內涵（25%）"}, {"year": "108-3", "text": "請比較行銷觀念和銷售觀念的內涵與差異", "raw": "108-3 請比較行銷觀念和銷售觀念的內涵與差異"}, {"year": "107-3", "text": "請說明行銷觀念與銷售觀念的差異", "raw": "107-3 請說明行銷觀念與銷售觀念的差異"}, {"year": "92 專班", "text": "銷售導向與行銷導向有何不同？", "raw": "92 專班 銷售導向與行銷導向有何不同？"}], "answer_raw": "**銷售觀念**：廠商是假設消費者對於購買商品具有惰性或抗拒，因此組織必須進行積極的銷售與促銷，消費者才會購買其產品。所以廠商的重點便是放在促銷與強銷。\n\n**行銷觀念**：透過正確的了解顧客的需要，然後提供能滿足顧客需要的產品與服務，以使其主動購買。因此只要能正確的界定顧客的需要，並讓產品與服務能被顧客輕易取得，則銷售自然是水到渠成。\n\n**行銷觀念與銷售觀念之比較**\n銷售觀念是「賣我們所生產的產品」，而非「生產我們所能賣的產品」\n1. 賣我們的產品\n\t指先有產品，且不管他是否符合顧客的需要，都要想盡辦法把產品賣出去，此即銷售觀念。\n2. 生產我們所能賣的產品\n\t即為行銷觀念，他先確認顧客的需求，接者生產符合顧客需要的產品，最後才販賣所生產出來的產品。\n\n| 項目 | 行銷觀念 | 銷售觀念 |\n|---|---|---|\n| 起始點 | 產品生產之前 | 產品生產之後 |\n| 終止點 | 產品成交之後仍進行 | 產品成交之後即停止 |\n| 焦點 | 顧客需要 | 產品本身 |\n| 重心 | 市場 | 工廠 |\n| 手段 | 整體行銷 | 推廣 |\n| 目的 | 組織利潤與顧客滿足同步達成 | 為組織利潤不惜犧牲顧客滿足 |\n| 後續交換 | 重複交換 | 單次交換 |\n| 買賣關係 | 關係深厚 | 關係淺薄 |\n| 利害結果 | 雙贏或多贏 | 零和（你輸我贏） |\n| 關鍵技術 | 顧客需要的界定 | 銷售技巧 |\n| 利潤來源 | 顧客滿足 | 銷售量最大化 |", "answer_norm": "銷售觀念廠商是假設消費者對於購買商品具有惰性或抗拒因此組織必須進行積極的銷售與促銷消費者才會購買其產品所以廠商的重點便是放在促銷與強銷行銷觀念透過正確的了解顧客的需要然後提供能滿足顧客需要的產品與服務以使其主動購買因此只要能正確的界定顧客的需要並讓產品與服務能被顧客輕易取得則銷售自然是水到渠成行銷觀念與銷售觀念之比較銷售觀念是賣我們所生產的產品而非生產我們所能賣的產品賣我們的產品指先有產品且不管他是否符合顧客的需要都要想盡辦法把產品賣出去此即銷售觀念生產我們所能賣的產品即為行銷觀念他先確認顧客的需求接者生產符合顧客需要的產品最後才販賣所生產出來的產品項目行銷觀念銷售觀念起始點產品生產之前產品生產之後終止點產品成交之後仍進行產品成交之後即停止焦點顧客需要產品本身重心市場工廠手段整體行銷推廣目的組織利潤與顧客滿足同步達成為組織利潤不惜犧牲顧客滿足後續交換重複交換單次交換買賣關係關係深厚關係淺薄利害結果雙贏或多贏零和你輸我贏關鍵技術顧客需要的界定銷售技巧利潤來源顧客滿足銷售量最大化", "images": []}, {"id": "1-2", "chapter": "Ch1", "chapter_title": "Ch1 行銷導論", "title": "行銷觀念的內涵（三大觀念）", "prompts": [{"year": "106-1", "text": "請說明行銷觀念的完整內涵", "raw": "106-1 請說明行銷觀念的完整內涵"}, {"year": "103-3", "text": "請說明行銷觀念包含哪三大觀念？並說明其內涵", "raw": "103-3 請說明行銷觀念包含哪三大觀念？並說明其內涵"}, {"year": "100-4", "text": "行銷觀念的內涵為何？", "raw": "100-4 行銷觀念的內涵為何？"}], "answer_raw": "行銷觀念：透過正確的了解顧客的需要，然後提供能滿足顧客需要的產品與服務，以使其主動購買。因此只要能正確的界定顧客的需要，並讓產品與服務能被顧客輕易取得，則銷售自然是水到渠成。\n\n1. **哲學：顧客導向**\n\t- a. 指顧客至上、顧客第一、顧客為王及顧客為尊的觀念。\n\t- b. 企業必須從顧客的觀點來界定顧客的需要。\n\t- c. 成功關鍵在於是否能比競爭者更有效地迎合顧客的真正需要。\n2. **手段：整體行銷**，指組織採取整合性的行銷做法來行銷產品。\n\t- a. 行銷職能內的整體行銷：指行銷策略的各部分（例如：4Ps 間的協調配合）朝一致的方向來努力。例如：避免高價產品被放在低廉的通路。\n\t- b. 行銷職能外的整體行銷：指行銷職能必須和組織的其他職能進行良好的協調整合。企業的生產、人資、財務及研發等職能，必須和行銷職能協調運作，以免分散了彼此的力量。但行銷職能和其他職能往往有基本的衝突，例如生產著重少項多量的訂單，而顧客的訂單往往是多項少量。\n\t- c. 如何達到整體行銷：（1）外部行銷：指組織對外部顧客所採取的行銷活動，是行銷職能內的整體行銷。（2）內部行銷：指如何有效地傳達行銷的觀念給公司全體員工，使其能夠以顧客導向的心態來服務顧客。\n3. **目的：顧客滿意與組織目標同步達成**\n\t- a. 有效滿足目標市場顧客的需要與欲望，自然能夠達成組織的利潤目標。\n\t- b. 「消費者主義是行銷之恥」，因為消費者主義與消費者自力救濟盛行，意味著廠商沒做好行銷，沒達到消費者滿意的目的，才會使消費者走上自力救濟的路。\n\t- c. 關係行銷：當行銷人員能夠做到顧客導向並獲得顧客滿意時，便能夠和顧客維持一種深入且長期的關係。", "answer_norm": "行銷觀念透過正確的了解顧客的需要然後提供能滿足顧客需要的產品與服務以使其主動購買因此只要能正確的界定顧客的需要並讓產品與服務能被顧客輕易取得則銷售自然是水到渠成哲學顧客導向指顧客至上顧客第一顧客為王及顧客為尊的觀念企業必須從顧客的觀點來界定顧客的需要成功關鍵在於是否能比競爭者更有效地迎合顧客的真正需要手段整體行銷指組織採取整合性的行銷做法來行銷產品行銷職能內的整體行銷指行銷策略的各部分例如4Ps間的協調配合朝一致的方向來努力例如避免高價產品被放在低廉的通路行銷職能外的整體行銷指行銷職能必須和組織的其他職能進行良好的協調整合企業的生產人資財務及研發等職能必須和行銷職能協調運作以免分散了彼此的力量但行銷職能和其他職能往往有基本的衝突例如生產著重少項多量的訂單而顧客的訂單往往是多項少量如何達到整體行銷外部行銷指組織對外部顧客所採取的行銷活動是行銷職能內的整體行銷內部行銷指如何有效地傳達行銷的觀念給公司全體員工使其能夠以顧客導向的心態來服務顧客目的顧客滿意與組織目標同步達成有效滿足目標市場顧客的需要與欲望自然能夠達成組織的利潤目標消費者主義是行銷之恥因為消費者主義與消費者自力救濟盛行意味著廠商沒做好行銷沒達到消費者滿意的目的才會使消費者走上自力救濟的路關係行銷當行銷人員能夠做到顧客導向並獲得顧客滿意時便能夠和顧客維持一種深入且長期的關係", "images": ["assets/行銷期中-行銷觀念.png"]}, {"id": "1-3", "chapter": "Ch1", "chapter_title": "Ch1 行銷導論", "title": "產品觀念 vs 生產觀念", "prompts": [{"year": "113-1", "text": "請說明產品導向與生產導向之內涵為何？兩者差異為何？（25%）", "raw": "113-1 請說明產品導向與生產導向之內涵為何？兩者差異為何？（25%）"}, {"year": "112-1", "text": "請說明產品觀念與生產觀念的內涵，與兩者之差異。（25%）", "raw": "112-1 請說明產品觀念與生產觀念的內涵，與兩者之差異。（25%）"}, {"year": "104-3", "text": "說明產品觀念和生產觀念的內涵", "raw": "104-3 說明產品觀念和生產觀念的內涵"}], "answer_raw": "**生產觀念**\n\n- 為假設消費者所關心的是產品價格及購買上的便利性。\n- 經營重點在於降低成本及擴大產品鋪貨面，因此廠商會致力於追求高生產效率及廣泛的配銷。\n- 競爭力主要來自低廉的價格，若組織希望維持一定的利潤且保有低廉的價格，則須降低成本。\n- 可能成立條件：\n\t- a. 產品需求大於供給，消費者有商品就滿足，因此產品購買的便利性很重要。\n\t- b. 產品相當標準化，差異化空間有限，消費者只在意價格。\n\t- c. 產品成本過高侍限市場規模，廠商以大量生產降低成本，並降低價格以擴大市場。\n- 透過規模經濟降低成本，而量產的必要條件是標準化與規格化。例如：福特拓展 T 型車市場。\n- 生產觀念比較適合於產業上游的標準化原物料與零組件，因有明確的規格標準和品質指標。\n\n**產品觀念**\n\n- 堅持消費者喜愛品質與性能最好的產品，其管理階層通常致力於製造優良產品，並不斷地加以改良及提升品質，組織的經營重點在於追求最好品質的產品。\n- 產品觀念容易導致管理者對自己的產品陷於狂熱，反而對市場需求產生盲點，陷入較佳捕鼠器的陷阱。\n- 行銷近視病：當組織執著於產品本身，忽略顧客事實上是購買產品背後的利益，易被誤導至前途黷淡的產品。例如：數位相機普及使軟片需求降低，柯達未及時正視此替代性導致破產。\n- 產品導向的公司很少或未曾考慮顧客需要就進行產品設計，忽略產業外的競爭者而導致失敗。\n\n**兩者差異**\n1. 產品導向的組織比較執著於產品本身，很少或根本未考慮顧客的需要就進行產品設計，有時會忽略產業以外的可能競爭者，而面臨失敗的命運\n2. 生產導向則把重心放在標準化和規格化來達成量產，降低成本的目的。\n   生產導向較適合於產業上游的標準化原物料與零組件。", "answer_norm": "生產觀念為假設消費者所關心的是產品價格及購買上的便利性經營重點在於降低成本及擴大產品鋪貨面因此廠商會致力於追求高生產效率及廣泛的配銷競爭力主要來自低廉的價格若組織希望維持一定的利潤且保有低廉的價格則須降低成本可能成立條件產品需求大於供給消費者有商品就滿足因此產品購買的便利性很重要產品相當標準化差異化空間有限消費者只在意價格產品成本過高侍限市場規模廠商以大量生產降低成本並降低價格以擴大市場透過規模經濟降低成本而量產的必要條件是標準化與規格化例如福特拓展T型車市場生產觀念比較適合於產業上游的標準化原物料與零組件因有明確的規格標準和品質指標產品觀念堅持消費者喜愛品質與性能最好的產品其管理階層通常致力於製造優良產品並不斷地加以改良及提升品質組織的經營重點在於追求最好品質的產品產品觀念容易導致管理者對自己的產品陷於狂熱反而對市場需求產生盲點陷入較佳捕鼠器的陷阱行銷近視病當組織執著於產品本身忽略顧客事實上是購買產品背後的利益易被誤導至前途黷淡的產品例如數位相機普及使軟片需求降低柯達未及時正視此替代性導致破產產品導向的公司很少或未曾考慮顧客需要就進行產品設計忽略產業外的競爭者而導致失敗兩者差異產品導向的組織比較執著於產品本身很少或根本未考慮顧客的需要就進行產品設計有時會忽略產業以外的可能競爭者而面臨失敗的命運生產導向則把重心放在標準化和規格化來達成量產降低成本的目的生產導向較適合於產業上游的標準化原物料與零組件", "images": []}, {"id": "1-4", "chapter": "Ch1", "chapter_title": "Ch1 行銷導論", "title": "行銷定義與需求管理", "prompts": [{"year": "111-1", "text": "有人說行銷管理就是需求管理，請說明各種需求狀態與其所對應的行銷任務為何？（25%）", "raw": "111-1 有人說行銷管理就是需求管理，請說明各種需求狀態與其所對應的行銷任務為何？（25%）"}, {"year": "102-1", "text": "請說明行銷定義為何？有人說行銷管理也是需求管理，請說明需求的各種狀態與對應的行銷做法為何？", "raw": "102-1 請說明行銷定義為何？有人說行銷管理也是需求管理，請說明需求的各種狀態與對應的行銷做法為何？"}], "answer_raw": "**行銷的定義**：行銷是一套程序，經由有利於交換雙方和其他關係人的方式，來創造、溝通與傳達具有價值的產品給進行交換的對方。\n\n**行銷管理就是需求管理**：需求的狀態不同，行銷的任務也不同，依據需求的特性，可以劃分出八種不同的需求狀態。\n\n| 需求狀態 | 說明                                   | 例子                      | 行銷作法（任務） |\n| ---- | ------------------------------------ | ----------------------- | -------- |\n| 負需求  | 指市場中的目標顧客不喜歡此一產品，甚至願意支付代價來迴避此產品      | 打針、考試、犯罪者、日本納豆          | 扭回需求     |\n| 無需求  | 指目標顧客對產品表現出可有可無的需求，也就是對該產品並無特殊的興趣與偏好 | 新食物、新旅遊地點               | 創造需求     |\n| 潛在需求 | 指消費者存在著一種強烈的需求，但現有的產品卻無法滿足該強烈需求      | 無害香菸、智慧衣、抗癌藥開發          | 開發需求     |\n| 衰退需求 | 指對某些產品的需求下降                          | 對政黨惡鬥反感因此形成政治冷感，導致投票率降低 | 恢復需求     |\n| 波動需求 | 指產品面臨需求大量波動的問題，因而導致產能閒置或產能不足的情況      | 遊樂場、火鍋店、滑雪場、泳衣          | 平衡需求     |\n| 飽和需求 | 當組織的供需達到一致時，則是處於飽和需求                 | —                       | 維持需求     |\n| 超額需求 | 當需求超過組織所能處理的水準，或是超過預期的最高需求水準時則面臨超額需求 | 高速公路（大塞車）               | 減低需求     |\n| 有害需求 | 指對人體或社會有害的產品需求，此時組織應努力阻止其消費          | 毒品、槍枝                   | 消滅需求，    |", "answer_norm": "行銷的定義行銷是一套程序經由有利於交換雙方和其他關係人的方式來創造溝通與傳達具有價值的產品給進行交換的對方行銷管理就是需求管理需求的狀態不同行銷的任務也不同依據需求的特性可以劃分出八種不同的需求狀態需求狀態說明例子行銷作法任務負需求指市場中的目標顧客不喜歡此一產品甚至願意支付代價來迴避此產品打針考試犯罪者日本納豆扭回需求無需求指目標顧客對產品表現出可有可無的需求也就是對該產品並無特殊的興趣與偏好新食物新旅遊地點創造需求潛在需求指消費者存在著一種強烈的需求但現有的產品卻無法滿足該強烈需求無害香菸智慧衣抗癌藥開發開發需求衰退需求指對某些產品的需求下降對政黨惡鬥反感因此形成政治冷感導致投票率降低恢復需求波動需求指產品面臨需求大量波動的問題因而導致產能閒置或產能不足的情況遊樂場火鍋店滑雪場泳衣平衡需求飽和需求當組織的供需達到一致時則是處於飽和需求維持需求超額需求當需求超過組織所能處理的水準或是超過預期的最高需求水準時則面臨超額需求高速公路大塞車減低需求有害需求指對人體或社會有害的產品需求此時組織應努力阻止其消費毒品槍枝消滅需求", "images": []}, {"id": "1-5", "chapter": "Ch1", "chapter_title": "Ch1 行銷導論", "title": "社會責任行銷觀念", "prompts": [{"year": "112-2", "text": "請說明社會責任行銷觀念的內涵？並以台灣某一社會大眾認為以炒作土地著名的財團為例，要如何做才可以做到社會責任行銷？（25%）", "raw": "112-2 請說明社會責任行銷觀念的內涵？並以台灣某一社會大眾認為以炒作土地著名的財團為例，要如何做才可以做到社會責任行銷？（25%）"}], "answer_raw": "- 社會責任行銷觀念認為，組織須追求公司利潤（組織目標）、顧客需要及社會福祉三者的平衡，並解決彼此間的衝突。包括常見的：人性行銷、綠色行銷、生態行銷等觀念。\n- 行銷觀念雖同時考慮顧客的滿意與組織目標，但卻忽略了交換或交易以外的第三者，也就是社會大眾，產生了其副作用：行銷只顧取悅消費者卻忘了社會大眾，導致社會成本的增加。因為過於著重個體行銷，而在總體行銷上形成了一些缺憾，一般稱為個體和總體的兩難。例如：寶特瓶輕盈又方便，但會對環境造成污染。\n- 銷售觀念、行銷觀念與社會責任行銷觀念三者差別為：\n\t- a. 銷售觀念：只重視公司的利潤（組織目標）。\n\t- b. 行銷觀念：同時重視公司的利潤與顧客需要，要求組織目標與顧客滿意同步達成。\n\t- c. 社會責任行銷觀念：則是強調除了追求公司的利潤與滿足顧客需要外，還必須符合社會福祉。\n- 社會責任行銷觀念與行銷觀念並沒有衝突，它只是補足行銷觀念所忽略的一個面向：社會公益。\n- 全貌行銷：強調採取一種廣泛、完整和整合的觀點來進行行銷。它主要是結合了原本行銷觀念中所具有的整體行銷觀念（包括內部行銷與外部行銷）與關係行銷觀念（包括顧客導向與顧客滿足），以及社會責任行銷的觀念。", "answer_norm": "社會責任行銷觀念認為組織須追求公司利潤組織目標顧客需要及社會福祉三者的平衡並解決彼此間的衝突包括常見的人性行銷綠色行銷生態行銷等觀念行銷觀念雖同時考慮顧客的滿意與組織目標但卻忽略了交換或交易以外的第三者也就是社會大眾產生了其副作用行銷只顧取悅消費者卻忘了社會大眾導致社會成本的增加因為過於著重個體行銷而在總體行銷上形成了一些缺憾一般稱為個體和總體的兩難例如寶特瓶輕盈又方便但會對環境造成污染銷售觀念行銷觀念與社會責任行銷觀念三者差別為銷售觀念只重視公司的利潤組織目標行銷觀念同時重視公司的利潤與顧客需要要求組織目標與顧客滿意同步達成社會責任行銷觀念則是強調除了追求公司的利潤與滿足顧客需要外還必須符合社會福祉社會責任行銷觀念與行銷觀念並沒有衝突它只是補足行銷觀念所忽略的一個面向社會公益全貌行銷強調採取一種廣泛完整和整合的觀點來進行行銷它主要是結合了原本行銷觀念中所具有的整體行銷觀念包括內部行銷與外部行銷與關係行銷觀念包括顧客導向與顧客滿足以及社會責任行銷的觀念", "images": ["assets/行銷期中-全貌行銷.png"]}, {"id": "2-1", "chapter": "Ch2", "chapter_title": "Ch2 市場導向的策略管理", "title": "BCG 模式", "prompts": [{"year": "113-3", "text": "請說明 BCG 模式的內涵（15%）。從 BCG 來看，如何解讀『技嘉』分拆『技剛』的意涵？（10%）", "raw": "113-3 請說明 BCG 模式的內涵（15%）。從 BCG 來看，如何解讀『技嘉』分拆『技剛』的意涵？（10%）"}, {"year": "112-4", "text": "試說明 BCG Model 的內涵。（25%）", "raw": "112-4 試說明 BCG Model 的內涵。（25%）"}, {"year": "92 專班", "text": "試分析 BCG 模式的管理內涵", "raw": "92 專班 試分析 BCG 模式的管理內涵"}], "answer_raw": "由波士頓顧問集團發展出「BCG 模式」的分析方法。根據市場成長率（縱軸，以 10% 或國家經濟成長率為基準）與相對市場佔有率（橫軸，相對於最大競爭者的市占率）兩變數，BCG 模式可以分成四個方格，每個方格代表一種不同型式的事業。\n\n1. **明星事業**：是指一個處於高度成長市場的領導廠商，例如：生技和直播產業，這樣的 SBU 通常創造大量的利潤，同時也需大量現金支援其快速成長。最佳策略：產品改善、更好的通路、更多的促銷與更有效率的生產，進行再投資，以維持市占率。\n2. **金牛事業**：會產生許多現金，大多處於低成長率的市場，但為市場領導廠商，例如：商辦出租、百貨公司。基本策略是藉由效率提升以穩固競爭地位，除非市場需求大幅增加，否則金牛事業不會再擴展生產線，而金牛事業產生的大量現金，常用來支援其他成長率高而急需用錢的事業。\n3. **問題兒童事業**：處於快速成長但利潤不高的事業，所處的市場呈現高度成長，但其市占率卻相對低，例如：交友軟體、電子商務和餐廳。其通常需要大量現金支援，否則會被淘汰，通常此事業的策略不是大量投資以取得市占率，就是放棄此 SBU。\n4. **落水狗事業**：位於低度成長和低市占率市場中，通常採取收割策略或是結束營運。例如：營造、旅館。\n5. 當廠商將各個 SBU 放置在 BCG 模式之後，可以判定事業組合是否健全。\n\t- a. 缺乏問題兒童事業 → 代表明日的明星事業無法出現。\n\t- b. 缺乏明星事業 → 代表明日的金牛事業會出現斷層。\n\t- c. 缺乏金牛事業 → 資金的供給可能會不足。\n6. 其次判定組合是否均衡，考慮 SBU 間在資金需求上的互補關係。不論太多落水狗或問題兒童，或太少明星跟金牛，組合都會顯得不平衡，所以在數量上，提供資金跟需要資金的 SBU 要差不多。\n7. 廠商的下一個任務是決定每個 SBU 的目標、策略和預算，有四個方向：\n\t- a. 建立：增加 SBU 的市占率，寧願放棄短期利益也要增加市占，適用於問題兒童事業，透過提升市占率轉變為明星事業。\n\t- b. 維持：維持 SBU 的市占率，適用能夠持續生產大量現金的金牛事業。\n\t- c. 收割：增加 SBU 的短期現金流量，適用於不被看好的明星事業，雖然前途黷淡，仍可出售事業以獲取現金，也適用於沒有發展前景的落水狗和問題兒童事業。\n\t- d. 撤資：將事業出售或清算，因為將資源轉移到其他事業，將對企業更有利，適用於落水狗和失敗的問題兒童事業，避免其浪費企業資源，啜蝕獲利。", "answer_norm": "由波士頓顧問集團發展出BCG模式的分析方法根據市場成長率縱軸以10或國家經濟成長率為基準與相對市場佔有率橫軸相對於最大競爭者的市占率兩變數BCG模式可以分成四個方格每個方格代表一種不同型式的事業明星事業是指一個處於高度成長市場的領導廠商例如生技和直播產業這樣的SBU通常創造大量的利潤同時也需大量現金支援其快速成長最佳策略產品改善更好的通路更多的促銷與更有效率的生產進行再投資以維持市占率金牛事業會產生許多現金大多處於低成長率的市場但為市場領導廠商例如商辦出租百貨公司基本策略是藉由效率提升以穩固競爭地位除非市場需求大幅增加否則金牛事業不會再擴展生產線而金牛事業產生的大量現金常用來支援其他成長率高而急需用錢的事業問題兒童事業處於快速成長但利潤不高的事業所處的市場呈現高度成長但其市占率卻相對低例如交友軟體電子商務和餐廳其通常需要大量現金支援否則會被淘汰通常此事業的策略不是大量投資以取得市占率就是放棄此SBU落水狗事業位於低度成長和低市占率市場中通常採取收割策略或是結束營運例如營造旅館當廠商將各個SBU放置在BCG模式之後可以判定事業組合是否健全缺乏問題兒童事業代表明日的明星事業無法出現缺乏明星事業代表明日的金牛事業會出現斷層缺乏金牛事業資金的供給可能會不足其次判定組合是否均衡考慮SBU間在資金需求上的互補關係不論太多落水狗或問題兒童或太少明星跟金牛組合都會顯得不平衡所以在數量上提供資金跟需要資金的SBU要差不多廠商的下一個任務是決定每個SBU的目標策略和預算有四個方向建立增加SBU的市占率寧願放棄短期利益也要增加市占適用於問題兒童事業透過提升市占率轉變為明星事業維持維持SBU的市占率適用能夠持續生產大量現金的金牛事業收割增加SBU的短期現金流量適用於不被看好的明星事業雖然前途黷淡仍可出售事業以獲取現金也適用於沒有發展前景的落水狗和問題兒童事業撤資將事業出售或清算因為將資源轉移到其他事業將對企業更有利適用於落水狗和失敗的問題兒童事業避免其浪費企業資源啜蝕獲利", "images": ["assets/行銷期中-BCG模式.png"]}, {"id": "2-2", "chapter": "Ch2", "chapter_title": "Ch2 市場導向的策略管理", "title": "7-S 架構", "prompts": [{"year": "107-1", "text": "請說明 7-S 架構的內涵", "raw": "107-1 請說明 7-S 架構的內涵"}, {"year": "100-3", "text": "何謂 7-S 架構，其內涵為何？其和策略管理有何關係？", "raw": "100-3 何謂 7-S 架構，其內涵為何？其和策略管理有何關係？"}, {"year": "92 專班", "text": "解釋名詞：7-S 架構", "raw": "92 專班 解釋名詞：7-S 架構"}], "answer_raw": "- 7-S 架構包含：策略、結構、體制、領導風格、人才、技能、共享價值。\n- 策略執行：是策略與組織內其他相關因素的配適。可以利用 7-S 架構來思考。在策略執行上，必須考慮策略與其他六個 S 的配適是否恰當。\n- 策略執行是將策略變成具體行動任務的一種過程，並確保這些任務是朝向所規劃的目標去完成。7S 架構圖提供在思考上很好的指引方向，包含人才、體制、技能、結構、領導風格、共享價值等。\n- 與策略管理的關係：策略管理可以分為策略規劃、策略執行、策略控制三個階段。\n\t- a. 策略規劃的挑戰：因為環境的機會與威脅，以及資源的強勢和弱勢，是會根據廠商目標的不同而不同，例如廠商調高獲利性目標，就必須尋找新的環境機會，存在於目標、環境與資源之間的動態關係，讓策略規劃變得更複雜。\n\t- b. 策略執行：是策略與組織內其他相關因素的配適。可以利用 7-S 架構來思考。\n\t- c. 策略控制：主要是衡量廠商的策略績效，並與目標進行比較，再根據其差異來修正與調整目標、策略計畫，與實際執行行動，因此策略控制是為了達成目標，所做的衡量、修正跟調整的過程。", "answer_norm": "7S架構包含策略結構體制領導風格人才技能共享價值策略執行是策略與組織內其他相關因素的配適可以利用7S架構來思考在策略執行上必須考慮策略與其他六個S的配適是否恰當策略執行是將策略變成具體行動任務的一種過程並確保這些任務是朝向所規劃的目標去完成7S架構圖提供在思考上很好的指引方向包含人才體制技能結構領導風格共享價值等與策略管理的關係策略管理可以分為策略規劃策略執行策略控制三個階段策略規劃的挑戰因為環境的機會與威脅以及資源的強勢和弱勢是會根據廠商目標的不同而不同例如廠商調高獲利性目標就必須尋找新的環境機會存在於目標環境與資源之間的動態關係讓策略規劃變得更複雜策略執行是策略與組織內其他相關因素的配適可以利用7S架構來思考策略控制主要是衡量廠商的策略績效並與目標進行比較再根據其差異來修正與調整目標策略計畫與實際執行行動因此策略控制是為了達成目標所做的衡量修正跟調整的過程", "images": ["assets/行銷期中-7S架構.png"]}, {"id": "2-3", "chapter": "Ch2", "chapter_title": "Ch2 市場導向的策略管理", "title": "策略金三角", "prompts": [{"year": "101-4", "text": "請說明策略金三角的內涵", "raw": "101-4 請說明策略金三角的內涵"}], "answer_raw": "策略管理是一種「配適」概念，藉由維持和創造廠商目標、環境與資源三者的配合，以發展出可行策略的一種管理程序。策略金三角影響策略，彼此也會互相影響。\n\n1. **目標**：策略要追求的標的，即策略是達成目標的手段。\n2. **環境**：指廠商的外部，通常廠商對環境因素的掌控能力較低。環境因素又分為：\n\t- a. O 機會：有利於廠商達成目標的環境因素。\n\t- b. T 威脅：在廠商達成目標的過程中，形成阻力加妨礙的環境因素。\n3. **資源**：\n\t- a. 廣義的資源：企業所擁有的有價值資產，例如廠商的人力、財務和技術等。\n\t- b. 狹義的資源：廠商可運用的物資或人力，例如資金、人才及土地等。\n\t- c. 能耐：指運用、轉換與整合狹義資源的能力，例如技術、行銷能力與知識等。\n\t- d. S 強勢：相對上資源較有利的條件。\n\t- e. W 弱勢：相對上資源較不利的條件。\n\n這種針對環境和資源的分析，也就是內外部分析（SWOT 分析）。策略規劃結論：策略是達成目標的手段，這種手段必須能運用資源的強勢，來彌補資源的弱勢，並能掌握環境中的機會，來迴避其威脅。", "answer_norm": "策略管理是一種配適概念藉由維持和創造廠商目標環境與資源三者的配合以發展出可行策略的一種管理程序策略金三角影響策略彼此也會互相影響目標策略要追求的標的即策略是達成目標的手段環境指廠商的外部通常廠商對環境因素的掌控能力較低環境因素又分為O機會有利於廠商達成目標的環境因素T威脅在廠商達成目標的過程中形成阻力加妨礙的環境因素資源廣義的資源企業所擁有的有價值資產例如廠商的人力財務和技術等狹義的資源廠商可運用的物資或人力例如資金人才及土地等能耐指運用轉換與整合狹義資源的能力例如技術行銷能力與知識等S強勢相對上資源較有利的條件W弱勢相對上資源較不利的條件這種針對環境和資源的分析也就是內外部分析SWOT分析策略規劃結論策略是達成目標的手段這種手段必須能運用資源的強勢來彌補資源的弱勢並能掌握環境中的機會來迴避其威脅", "images": ["assets/行銷期中-策略金三角.png"]}, {"id": "2-4", "chapter": "Ch2", "chapter_title": "Ch2 市場導向的策略管理", "title": "策略的層次", "prompts": [{"year": "113-2", "text": "請說明策略的擬定可以分為哪些層次，各個策略層次的內涵為何？（25%）", "raw": "113-2 請說明策略的擬定可以分為哪些層次，各個策略層次的內涵為何？（25%）"}], "answer_raw": "策略分為三個層次：總體策略、事業策略、職能策略。\n\n1. **總體策略**：探討如何發展出一套有利的事業組合策略。分析工具包括 BCG 模式（見 2-1）與奇異電器多因子投資組合矩陣。奇異電器多因子投資組合包含市場吸引力和事業地位兩個構面，以更有效分析 SBU 之間的關係；一個 SBU 的成功與否，在於能否進入具有吸引力的市場，並擁有在該市場成功的必備競爭優勢。此矩陣利用兩個構面分成九個方格，並歸類成三大區塊：\n\t- a. 左上角：表示強勢的 SBU，企業應該加以投資使他們成長。\n\t- b. 對角線：表示 SBU 整體吸引力中等，應審慎選擇以賺取盈餘。\n\t- c. 右下角：表示 SBU 整體吸引力低，企業應考慮收割或撤資。\n2. **事業策略**：探討如何使組織內的各個 SBU 在其產業或區隔市場內改善其競爭地位。\n\t- a. Porter 認為所有事業單位在競爭時，所用策略可分三種基本策略型態：成本領導策略（透過經驗曲線或效率的追求來取得最低成本，並由低價格來獲得競爭優勢）、差異化策略（透過塑造產品或服務的獨特性，造成與競爭者的有利差異）、集中策略（將有限資源集中在某個特殊區隔，透過滿足該區隔的獨特需求來取得優勢）。\n\t- b. Ansoff 產品／市場矩陣劃分四種事業策略替代方案：市場滲透策略（現有產品、現有市場）、市場發展策略（將現有產品打入新開發的市場）、產品發展策略（在現有的市場上發展新產品）、多角化策略（開發新產品來打入全新的市場）。\n3. **職能策略**：探討如何在各個職能領域內，達成最大的資源生產力。完整的職能策略包括生產策略、行銷策略、人力資源策略、研究發展策略、財務策略。其中，行銷策略包括描述與選擇一個或多個目標市場的活動，並發展和維持行銷組合，使目標顧客在交換過程中感到滿意。主要的行銷策略包括三步驟：目標市場策略、定位策略、行銷組合。", "answer_norm": "策略分為三個層次總體策略事業策略職能策略總體策略探討如何發展出一套有利的事業組合策略分析工具包括BCG模式見21與奇異電器多因子投資組合矩陣奇異電器多因子投資組合包含市場吸引力和事業地位兩個構面以更有效分析SBU之間的關係一個SBU的成功與否在於能否進入具有吸引力的市場並擁有在該市場成功的必備競爭優勢此矩陣利用兩個構面分成九個方格並歸類成三大區塊左上角表示強勢的SBU企業應該加以投資使他們成長對角線表示SBU整體吸引力中等應審慎選擇以賺取盈餘右下角表示SBU整體吸引力低企業應考慮收割或撤資事業策略探討如何使組織內的各個SBU在其產業或區隔市場內改善其競爭地位Porter認為所有事業單位在競爭時所用策略可分三種基本策略型態成本領導策略透過經驗曲線或效率的追求來取得最低成本並由低價格來獲得競爭優勢差異化策略透過塑造產品或服務的獨特性造成與競爭者的有利差異集中策略將有限資源集中在某個特殊區隔透過滿足該區隔的獨特需求來取得優勢Ansoff產品市場矩陣劃分四種事業策略替代方案市場滲透策略現有產品現有市場市場發展策略將現有產品打入新開發的市場產品發展策略在現有的市場上發展新產品多角化策略開發新產品來打入全新的市場職能策略探討如何在各個職能領域內達成最大的資源生產力完整的職能策略包括生產策略行銷策略人力資源策略研究發展策略財務策略其中行銷策略包括描述與選擇一個或多個目標市場的活動並發展和維持行銷組合使目標顧客在交換過程中感到滿意主要的行銷策略包括三步驟目標市場策略定位策略行銷組合", "images": ["assets/行銷期中-GE多因子矩陣.png", "assets/行銷期中-Ansoff矩陣.png"]}, {"id": "2-5", "chapter": "Ch2", "chapter_title": "Ch2 市場導向的策略管理", "title": "使命", "prompts": [{"year": "111-2", "text": "使命的制定可以思考哪些要素？請詳細說明其內涵。（25%）", "raw": "111-2 使命的制定可以思考哪些要素？請詳細說明其內涵。（25%）"}], "answer_raw": "- 使命代表廠商存在的根本價值，可以參考彼得·杜拉克的訂定使命的指引，例如「我們所經營的是什麼事業？」「我們對顧客提供的價值是什麼？」等，可以從廠商存在的根本價值和本質，作為制定使命時思考的方向，而使命的定義會深深影響到廠商長期的資源配置、利潤和生存。\n- 使命說明書：顧客、產品或服務、地理涵蓋範圍、核心技術、企業目標、經營哲學、自我概念、公共形象、激勵的魅力、對員工的關切。\n- 亞柏的核心思考構面：簡單且核心的思考\n\t- a. WHO：我們要滿足哪些顧客？\n\t- b. WHAT：我們要滿足顧客什麼需求？\n\t- c. HOW：要用何種技術來滿足他的需求？\n- 使命說明書不可過於窄化，太注重產品會導致患有行銷近視病，也不可太寬，無法指引員工。", "answer_norm": "使命代表廠商存在的根本價值可以參考彼得杜拉克的訂定使命的指引例如我們所經營的是什麼事業我們對顧客提供的價值是什麼等可以從廠商存在的根本價值和本質作為制定使命時思考的方向而使命的定義會深深影響到廠商長期的資源配置利潤和生存使命說明書顧客產品或服務地理涵蓋範圍核心技術企業目標經營哲學自我概念公共形象激勵的魅力對員工的關切亞柏的核心思考構面簡單且核心的思考WHO我們要滿足哪些顧客WHAT我們要滿足顧客什麼需求HOW要用何種技術來滿足他的需求使命說明書不可過於窄化太注重產品會導致患有行銷近視病也不可太寬無法指引員工", "images": []}, {"id": "3-1", "chapter": "Ch3", "chapter_title": "Ch3 行銷環境", "title": "競爭者類型", "prompts": [{"year": "114-4", "text": "競爭者可以分為哪些類型？（25%）", "raw": "114-4 競爭者可以分為哪些類型？（25%）"}, {"year": "111-3", "text": "以競爭的層次來看，競爭者可以分為哪些類型？請說明其內涵。（25%）", "raw": "111-3 以競爭的層次來看，競爭者可以分為哪些類型？請說明其內涵。（25%）"}, {"year": "106-4", "text": "競爭者分為哪些類型，請說明其內涵", "raw": "106-4 競爭者分為哪些類型，請說明其內涵"}, {"year": "102-2", "text": "以競爭的層次來看，競爭者可以分為哪幾類，其內涵為何？", "raw": "102-2 以競爭的層次來看，競爭者可以分為哪幾類，其內涵為何？"}], "answer_raw": "以競爭者的層次來看，競爭者可以分成四種類型：\n\n1. **欲望競爭者**：指對有限購買力的競爭。由於每人的所得有限、然而欲望無窮，因此無窮的欲望會彼此競爭有限的購買力。例如：大學生將有限金錢花在機車、書籍或和朋友出遊。\n2. **本質競爭者**：指消費者可藉以滿足相同欲望的其他替代方式。例如：若決定和朋友出去，要去唱 KTV 還是看電影等。\n3. **型式競爭者**：指消費者可藉以滿足其欲望之產品型式。例如：看電影要選喜劇還科幻片等。\n4. **品牌競爭者**：指消費者可藉以滿足相同欲望之所有品牌間的競爭。例如：要去哪間電影院。\n\n補充例子：原本年菜是飯店年節時主力商品，近來便利商店、量販店等也有年菜預購，平時較無交集的業者在年節卻變成彼此的競爭對手。", "answer_norm": "以競爭者的層次來看競爭者可以分成四種類型欲望競爭者指對有限購買力的競爭由於每人的所得有限然而欲望無窮因此無窮的欲望會彼此競爭有限的購買力例如大學生將有限金錢花在機車書籍或和朋友出遊本質競爭者指消費者可藉以滿足相同欲望的其他替代方式例如若決定和朋友出去要去唱KTV還是看電影等型式競爭者指消費者可藉以滿足其欲望之產品型式例如看電影要選喜劇還科幻片等品牌競爭者指消費者可藉以滿足相同欲望之所有品牌間的競爭例如要去哪間電影院補充例子原本年菜是飯店年節時主力商品近來便利商店量販店等也有年菜預購平時較無交集的業者在年節卻變成彼此的競爭對手", "images": []}, {"id": "3-2", "chapter": "Ch3", "chapter_title": "Ch3 行銷環境", "title": "環境分析的架構", "prompts": [{"year": "112-3", "text": "試說明環境分析的架構，並以專門生產砂輪的中國砂輪公司為例來說明其環境的內涵。", "raw": "112-3 試說明環境分析的架構，並以專門生產砂輪的中國砂輪公司為例來說明其環境的內涵。"}], "answer_raw": "行銷環境：指組織外部的環境，具高度變化性、不確定性和衝擊性，會不斷出現機會和威脅，雖然其難以預測，但若置之不管可能會導致錯誤的決策，進而造成龐大損失。行銷環境的架構由內而外為：組織內部 → 個體環境 → 總體環境 → 超環境。\n\n1. **個體環境（直接環境、產業環境、市場環境）**：指對組織經營有直接與立即影響的環境因素，是偏項產業內的因素。\n\t- a. 個體環境的成員（九種）：供應商、行銷中間機構（中間商、實體運配機構、行銷服務機構）、財務機構、顧客、競爭者、工會、特殊利益團體、社區、股東。\n\t- b. 個體環境的分析架構：五力分析（Michael Porter 提出），透過六種力量（潛在進入者的威脅、供應商的談判力量、購買者的談判力量、替代品的威脅、產業內部的對抗與合作、其他關係人的力量）來分析個體環境中所存在的機會與威脅，可作為行銷人員制定行銷決策的參考。\n2. **總體環境（間接環境）**：指對組織的經營有間接影響的環境因素，環境影響的是泛產業。\n\t- a. 總體環境的六種力量：人口統計環境（最重要的環境，因為人是市場的主體）、經濟環境、社會與文化環境、政治與法律環境、科技環境、自然環境。\n\t- b. 總體環境之特性：疆域很大、徵候與訊號很微弱、因素難以控制、需要各種專家參與。\n\t- c. 總體環境的分析：關鍵事件分析法。行銷人員選擇某些關鍵的環境事件，再根據其衝擊程度與影響時間幅度進一步分析，來對其發展與未來趨勢進行監控。衝擊大且時間長的事件須密切注意，反之則適當關心即可。\n3. **超環境（鬼神環境）**：指外界一些冥冥不可知的力量。", "answer_norm": "行銷環境指組織外部的環境具高度變化性不確定性和衝擊性會不斷出現機會和威脅雖然其難以預測但若置之不管可能會導致錯誤的決策進而造成龐大損失行銷環境的架構由內而外為組織內部個體環境總體環境超環境個體環境直接環境產業環境市場環境指對組織經營有直接與立即影響的環境因素是偏項產業內的因素個體環境的成員九種供應商行銷中間機構中間商實體運配機構行銷服務機構財務機構顧客競爭者工會特殊利益團體社區股東個體環境的分析架構五力分析MichaelPorter提出透過六種力量潛在進入者的威脅供應商的談判力量購買者的談判力量替代品的威脅產業內部的對抗與合作其他關係人的力量來分析個體環境中所存在的機會與威脅可作為行銷人員制定行銷決策的參考總體環境間接環境指對組織的經營有間接影響的環境因素環境影響的是泛產業總體環境的六種力量人口統計環境最重要的環境因為人是市場的主體經濟環境社會與文化環境政治與法律環境科技環境自然環境總體環境之特性疆域很大徵候與訊號很微弱因素難以控制需要各種專家參與總體環境的分析關鍵事件分析法行銷人員選擇某些關鍵的環境事件再根據其衝擊程度與影響時間幅度進一步分析來對其發展與未來趨勢進行監控衝擊大且時間長的事件須密切注意反之則適當關心即可超環境鬼神環境指外界一些冥冥不可知的力量", "images": ["assets/行銷期中-行銷環境架構.png", "assets/行銷期中-五力分析.png", "assets/行銷期中-關鍵事件分析.png"]}, {"id": "4-1", "chapter": "Ch4", "chapter_title": "Ch4 行銷資訊與行銷研究", "title": "研究的類型", "prompts": [{"year": "107-2", "text": "請說明研究可以分為哪幾種類型？並說明其內涵。另外請以中美貿易大戰為主題進行舉例說明各類研究", "raw": "107-2 請說明研究可以分為哪幾種類型？並說明其內涵。另外請以中美貿易大戰為主題進行舉例說明各類研究"}, {"year": "104-4", "text": "說明研究可分為哪三種類型？其內涵為？", "raw": "104-4 說明研究可分為哪三種類型？其內涵為？"}, {"year": "103-1", "text": "請說明三種研究類型的內涵與差異點，並請以一個研究主題來說明三種類型的研究題目與主要變數", "raw": "103-1 請說明三種研究類型的內涵與差異點，並請以一個研究主題來說明三種類型的研究題目與主要變數"}], "answer_raw": "1. **探索性研究**：當面對一個全然陌生的研究領域，而過去對這個領域所獲得的資訊十分有限，或是根本也不知道該著手研究哪一特定問題，此時可以先透過探索性研究來鳥瞰全局。探索性研究較偏向使用一些非結構性的問題，來引發對此研究領域獨特的見解。\n\t- 例如：欲知若中美貿易戰真正開打，對台灣廠商未來全球行銷活動可能造成的衝擊及其潛在的機會。由於過去缺乏這方面的研究經驗，是全新的領域，因此可先進行探索性研究。如透過廣泛的深入訪談，可先歸納出整個架構、命題與次領域，而後續的研究則可以由此著手。\n2. **描述性研究**：重點在於蒐集與呈現事實，通常這類研究的目的是發現已存在的事實資料。因此描述性研究對既存事實的挖掘，並不一定有規範性的意義。\n\t- 例如：同上主題，可去了解中國和美國之間的貿易往來，進出口的品項、比例、匯率和關稅等等，以及台灣與此兩國間的貿易比例等資料。\n3. **規範性研究**：規範性研究是一種因果性的研究，即是尋找變數之間的因果關係，並得知採取何種方式會比較容易達成目標。\n\t- 例如：同上主題，可研究在中美貿易戰中，台灣進行怎樣的行銷活動可以降低影響、進出口貨物如何調整較好、立場應偏向某方或維持中立以保衛國家等問題。", "answer_norm": "探索性研究當面對一個全然陌生的研究領域而過去對這個領域所獲得的資訊十分有限或是根本也不知道該著手研究哪一特定問題此時可以先透過探索性研究來鳥瞰全局探索性研究較偏向使用一些非結構性的問題來引發對此研究領域獨特的見解例如欲知若中美貿易戰真正開打對台灣廠商未來全球行銷活動可能造成的衝擊及其潛在的機會由於過去缺乏這方面的研究經驗是全新的領域因此可先進行探索性研究如透過廣泛的深入訪談可先歸納出整個架構命題與次領域而後續的研究則可以由此著手描述性研究重點在於蒐集與呈現事實通常這類研究的目的是發現已存在的事實資料因此描述性研究對既存事實的挖掘並不一定有規範性的意義例如同上主題可去了解中國和美國之間的貿易往來進出口的品項比例匯率和關稅等等以及台灣與此兩國間的貿易比例等資料規範性研究規範性研究是一種因果性的研究即是尋找變數之間的因果關係並得知採取何種方式會比較容易達成目標例如同上主題可研究在中美貿易戰中台灣進行怎樣的行銷活動可以降低影響進出口貨物如何調整較好立場應偏向某方或維持中立以保衛國家等問題", "images": []}, {"id": "4-2", "chapter": "Ch4", "chapter_title": "Ch4 行銷資訊與行銷研究", "title": "抽樣計畫與誤差", "prompts": [{"year": "114-2", "text": "請說明抽樣計畫的內容為何？（10%）及其產生的誤差種類有哪些及內涵（15%）", "raw": "114-2 請說明抽樣計畫的內容為何？（10%）及其產生的誤差種類有哪些及內涵（15%）"}, {"year": "111-4", "text": "一項研究來自於樣本所可能產生的誤差有哪些？請詳細說明之。（25%）", "raw": "111-4 一項研究來自於樣本所可能產生的誤差有哪些？請詳細說明之。（25%）"}, {"year": "92 專班", "text": "解釋名詞：架構誤差", "raw": "92 專班 解釋名詞：架構誤差"}], "answer_raw": "**抽樣方法**：是以樣本代表整體。通常一個抽樣計畫要回答三個問題：抽誰、如何抽、抽多少。\n\n1. **抽誰**：只有在詳細地界定了所要研究的母體內涵後，方能知道抽樣的對象為何。\n2. **如何抽**：影響所抽出的樣本是否能夠代表整個母體。\n\t- a. 隨機抽樣：每個樣本被抽中的機率是固定的。包括單純隨機抽樣（母體中每一個體被抽中的機會都相同）、分層隨機抽樣（抽樣前先將母體分成若干層，利用單純隨機抽樣分別自每一層抽取一些個體作為樣本）、集群抽樣法（抽樣前先將母體分成許多群，然後利用隨機抽樣抽出一群作為樣本）、系統抽樣（將母體排列成相同個數的許多區間，每一區間以等距離方式抽出樣本）。\n\t- b. 非隨機抽樣：每個樣本被抽中的機率並不是固定的。包括便利抽樣（樣本的選取只考慮便利性）、判斷抽樣（由抽樣設計者的經驗判斷來選取樣本）、雪球抽樣（利用隨機方法先選出少數受訪者，再從該受訪者所提供的資訊去找其他第二批受訪者，如此像滾雪球一樣產生新樣本）。\n3. **抽多少**：表示到底要抽多少樣本才足夠，是有效性和成本間的權衡。\n\n**誤差**\n\n1. **衡量誤差**：當研究人員所期望的資訊與研究過程所實際取得的資訊有所差異，即產生衡量誤差。例如：進行產品消費研究，受訪者卻低報其實際消費金額。\n2. **抽樣誤差**：當樣本不能代表目標母體時，即產生抽樣誤差，包括：\n\t- a. 無反應誤差：當實際被調查的樣本與抽樣產生的樣本不同時，這種誤差之所以會發生是因為原本被選為調查樣本的人拒絕合作或無法接近。例如：秘書填寫高階主管的問卷。\n\t- b. 架構誤差：若樣本與目標母體有相當大的不同時即產生。例如：以市民電話簿單作為抽樣的架構，可能不是所有市民都有裝設電話以及並非市民電話皆有登錄。\n\t- c. 隨機誤差：當抽取的樣本無法完美地代表目標母體時產生。例如：第一次抽樣抽菸人口為 21%，第二次抽樣卻為 25%，兩者之差異即是隨機誤差。", "answer_norm": "抽樣方法是以樣本代表整體通常一個抽樣計畫要回答三個問題抽誰如何抽抽多少抽誰只有在詳細地界定了所要研究的母體內涵後方能知道抽樣的對象為何如何抽影響所抽出的樣本是否能夠代表整個母體隨機抽樣每個樣本被抽中的機率是固定的包括單純隨機抽樣母體中每一個體被抽中的機會都相同分層隨機抽樣抽樣前先將母體分成若干層利用單純隨機抽樣分別自每一層抽取一些個體作為樣本集群抽樣法抽樣前先將母體分成許多群然後利用隨機抽樣抽出一群作為樣本系統抽樣將母體排列成相同個數的許多區間每一區間以等距離方式抽出樣本非隨機抽樣每個樣本被抽中的機率並不是固定的包括便利抽樣樣本的選取只考慮便利性判斷抽樣由抽樣設計者的經驗判斷來選取樣本雪球抽樣利用隨機方法先選出少數受訪者再從該受訪者所提供的資訊去找其他第二批受訪者如此像滾雪球一樣產生新樣本抽多少表示到底要抽多少樣本才足夠是有效性和成本間的權衡誤差衡量誤差當研究人員所期望的資訊與研究過程所實際取得的資訊有所差異即產生衡量誤差例如進行產品消費研究受訪者卻低報其實際消費金額抽樣誤差當樣本不能代表目標母體時即產生抽樣誤差包括無反應誤差當實際被調查的樣本與抽樣產生的樣本不同時這種誤差之所以會發生是因為原本被選為調查樣本的人拒絕合作或無法接近例如秘書填寫高階主管的問卷架構誤差若樣本與目標母體有相當大的不同時即產生例如以市民電話簿單作為抽樣的架構可能不是所有市民都有裝設電話以及並非市民電話皆有登錄隨機誤差當抽取的樣本無法完美地代表目標母體時產生例如第一次抽樣抽菸人口為21第二次抽樣卻為25兩者之差異即是隨機誤差", "images": []}, {"id": "4-3", "chapter": "Ch4", "chapter_title": "Ch4 行銷資訊與行銷研究", "title": "投射技術法", "prompts": [{"year": "108-2", "text": "請說明投射技術的內涵，並說明常用的投射技術方法有哪些以及其內涵", "raw": "108-2 請說明投射技術的內涵，並說明常用的投射技術方法有哪些以及其內涵"}, {"year": "101-3", "text": "請說明實驗研究法和投射技術法的內涵（實驗研究法見 4-4）", "raw": "101-3 請說明實驗研究法和投射技術法的內涵（實驗研究法見 4-4）"}], "answer_raw": "投射技術法屬於定性研究，可和焦點群體法和深入訪談法並用。\n\n1. 主要是基於消費者有很多的動機會存在潛意識層次中，但在意識層次則會加以掩飾，因此可以透過投射技術法來找出真正的動機。\n2. 投射技術法認為，一個人內在的感受會影響其對刺激的反應，因此他們的反應可能透露出他們背後的真正需要、恐懼以及動機等。\n3. 常用方法包括：\n\t- a. 語句完成法：要求樣本完成不完整的句子，來得知樣本的隱藏動機。\n\t- b. 填補漫畫的空白對話：要求樣本將特別設計的漫畫的空白對話填補完整。\n\t- c. 墨漬測驗：要求樣本自由聯想來解釋墨漬意涵。\n\t- d. 單詞聯想法：要求樣本對某一字句進行自由的聯想與回應。\n\t- e. 角色扮演：要求樣本扮演特定角色，藉由扮演不自覺透漏內心真正的觀點和動機。", "answer_norm": "投射技術法屬於定性研究可和焦點群體法和深入訪談法並用主要是基於消費者有很多的動機會存在潛意識層次中但在意識層次則會加以掩飾因此可以透過投射技術法來找出真正的動機投射技術法認為一個人內在的感受會影響其對刺激的反應因此他們的反應可能透露出他們背後的真正需要恐懼以及動機等常用方法包括語句完成法要求樣本完成不完整的句子來得知樣本的隱藏動機填補漫畫的空白對話要求樣本將特別設計的漫畫的空白對話填補完整墨漬測驗要求樣本自由聯想來解釋墨漬意涵單詞聯想法要求樣本對某一字句進行自由的聯想與回應角色扮演要求樣本扮演特定角色藉由扮演不自覺透漏內心真正的觀點和動機", "images": []}, {"id": "4-4", "chapter": "Ch4", "chapter_title": "Ch4 行銷資訊與行銷研究", "title": "實驗研究法", "prompts": [{"year": "106-3", "text": "試說明實驗研究法的內涵，以及常用的有哪些方法，並舉例說明之", "raw": "106-3 試說明實驗研究法的內涵，以及常用的有哪些方法，並舉例說明之"}, {"year": "101-3", "text": "請說明實驗研究法和投射技術法的內涵（投射技術法見 4-3）", "raw": "101-3 請說明實驗研究法和投射技術法的內涵（投射技術法見 4-3）"}], "answer_raw": "實驗研究法：藉由操弄一個或一個以上的自變數，來觀察應變數有何變化的一種研究方法。不但是一種具有高度科學效度的研究方法，同時也是最能釐清因果關係的研究方法。實驗研究法目的在於消除所有可能影響觀測結果的外生因素，以求出真正的因果關係。\n\n1. **實地實驗法**：指在現實生活中的真實環境下所做的實驗。例如：在餐廳操弄音樂的節奏，觀察其對餐廳顧客的消費金額與停留時間的影響。\n2. **實驗室實驗法**：指在實驗室或非真實的環境下所做的實驗。例如：教室布置成賣場，探討賣場布置對購買意圖的影響，或以學生為樣本，以實驗研究廣告設計對品牌偏好的影響。", "answer_norm": "實驗研究法藉由操弄一個或一個以上的自變數來觀察應變數有何變化的一種研究方法不但是一種具有高度科學效度的研究方法同時也是最能釐清因果關係的研究方法實驗研究法目的在於消除所有可能影響觀測結果的外生因素以求出真正的因果關係實地實驗法指在現實生活中的真實環境下所做的實驗例如在餐廳操弄音樂的節奏觀察其對餐廳顧客的消費金額與停留時間的影響實驗室實驗法指在實驗室或非真實的環境下所做的實驗例如教室布置成賣場探討賣場布置對購買意圖的影響或以學生為樣本以實驗研究廣告設計對品牌偏好的影響", "images": []}, {"id": "4-5", "chapter": "Ch4", "chapter_title": "Ch4 行銷資訊與行銷研究", "title": "觀察研究法", "prompts": [{"year": "100-2", "text": "說明觀察研究法的內涵。", "raw": "100-2 說明觀察研究法的內涵。"}], "answer_raw": "觀察研究法：係藉由觀察樣本相關的行為與背景來蒐集研究資料的方法。特別適合當有些樣本在面對問卷或訪談時，不願表達其想法或意見的狀況，或對自身行為及其背後動機可能無法清楚解釋的樣本。除了請人進行觀察外，有些觀察是藉由機器或一些裝置來進行。\n\n1. **參與觀察**：觀察者實際融入被觀察者之中來進行觀察。例如：神秘顧客。\n2. **非參與觀察**：觀察者並不融入被觀察者之中。例如：透過單面鏡觀察。", "answer_norm": "觀察研究法係藉由觀察樣本相關的行為與背景來蒐集研究資料的方法特別適合當有些樣本在面對問卷或訪談時不願表達其想法或意見的狀況或對自身行為及其背後動機可能無法清楚解釋的樣本除了請人進行觀察外有些觀察是藉由機器或一些裝置來進行參與觀察觀察者實際融入被觀察者之中來進行觀察例如神秘顧客非參與觀察觀察者並不融入被觀察者之中例如透過單面鏡觀察", "images": []}, {"id": "4-6", "chapter": "Ch4", "chapter_title": "Ch4 行銷資訊與行銷研究", "title": "行銷資訊系統", "prompts": [{"year": "113-4", "text": "請說明行銷資訊系統包括哪些種類？並請說明其內涵（25%）", "raw": "113-4 請說明行銷資訊系統包括哪些種類？並請說明其內涵（25%）"}], "answer_raw": "行銷資訊系統：以有組織的方式，持續蒐集、整理與分析行銷管理人員決策時所需的資訊。行銷資訊系統依據資訊內容與目的之不同，可分為：\n\n1. **行銷監控系統**：指一套不斷蒐集組織內部與外部相關訊息的系統，以便偵測所有可能影響行銷績效的變遷，此系統蒐集資訊的主要目的是為了保持對市場或行銷環境的瞭解，並非針對某一特定的行銷問題，因此行銷監控系統偏向定期的例行性資訊蒐集。\n2. **行銷研究系統**：針對某一特定的行銷問題所進行的資訊蒐集，行銷研究是問題導向的，此系統的啟動是因為想要解決所面對的某一特定行銷問題。對行銷管理人員的幫助：（1）改善決策的品質；（2）評估過去的行銷決策；（3）了解一個新的或陌生的市場；（4）尋求新的行銷機會。\n3. **行銷決策支援系統**：是一種著重互動與彈性的電腦資訊系統，可幫助行銷管理人員在決策時有效地取得與處理資訊。\n\t- a. 分類：資料庫（可儲存、分類、整理與存取組織內外部資訊）、模式庫（包含一些處理資訊的模式）、對談系統（允許行銷決策人員運用資料庫與模式庫，來尋求他們所關切的行銷問題的答案，並可模擬各種決策的結果）。\n\t- b. 特點：人機交談的機制、具有彈性、問題發現導向（可以透過「若則」的問題，來推論問題本質與可能結果）、使用者導向。\n\t- c. 運用範例：資料採礦（一種資料庫分析的工具，包括顧客剖面分析與市場菜籃分析）、顧客關係管理（希望能和顧客發展緊密的連結，對所有顧客接觸點進行管理來提升顧客的最大忠誠度）。", "answer_norm": "行銷資訊系統以有組織的方式持續蒐集整理與分析行銷管理人員決策時所需的資訊行銷資訊系統依據資訊內容與目的之不同可分為行銷監控系統指一套不斷蒐集組織內部與外部相關訊息的系統以便偵測所有可能影響行銷績效的變遷此系統蒐集資訊的主要目的是為了保持對市場或行銷環境的瞭解並非針對某一特定的行銷問題因此行銷監控系統偏向定期的例行性資訊蒐集行銷研究系統針對某一特定的行銷問題所進行的資訊蒐集行銷研究是問題導向的此系統的啟動是因為想要解決所面對的某一特定行銷問題對行銷管理人員的幫助改善決策的品質評估過去的行銷決策了解一個新的或陌生的市場尋求新的行銷機會行銷決策支援系統是一種著重互動與彈性的電腦資訊系統可幫助行銷管理人員在決策時有效地取得與處理資訊分類資料庫可儲存分類整理與存取組織內外部資訊模式庫包含一些處理資訊的模式對談系統允許行銷決策人員運用資料庫與模式庫來尋求他們所關切的行銷問題的答案並可模擬各種決策的結果特點人機交談的機制具有彈性問題發現導向可以透過若則的問題來推論問題本質與可能結果使用者導向運用範例資料採礦一種資料庫分析的工具包括顧客剖面分析與市場菜籃分析顧客關係管理希望能和顧客發展緊密的連結對所有顧客接觸點進行管理來提升顧客的最大忠誠度", "images": []}, {"id": "5-1", "chapter": "Ch5", "chapter_title": "Ch5 消費者市場與其購買行為", "title": "涉入程度與推敲可能性模式（ELM）", "prompts": [{"year": "114-3", "text": "請說明推敲可能性模式的內涵，及其在行銷策略上的意義？（25%）", "raw": "114-3 請說明推敲可能性模式的內涵，及其在行銷策略上的意義？（25%）"}, {"year": "108-1", "text": "請說明推敲可能性模式的內涵", "raw": "108-1 請說明推敲可能性模式的內涵"}, {"year": "104-1", "text": "說明推敲可能模式的內涵", "raw": "104-1 說明推敲可能模式的內涵"}, {"year": "102-3", "text": "何謂涉入程度？影響涉入程度的有那些因素？涉入和 ELM 有何關係？", "raw": "102-3 何謂涉入程度？影響涉入程度的有那些因素？涉入和 ELM 有何關係？"}], "answer_raw": "1. **涉入程度**：指消費者願意花在蒐集、評估與決策過程中的時間多寡，以及努力程度的高低。\n2. **影響涉入程度的五個因素**：\n\t- a. 先前經驗：例如：經常購買的產品相較於初次購買的產品，其涉入程度通常較低。\n\t- b. 興趣：例如：消費者對目前正在計畫購買的產品其涉入程度會較高。\n\t- c. 風險：例如：高單價的產品，因為財務風險高，則其涉入程度也會較高。\n\t- d. 情境：例如：有人平日省吃儉用，但是情人節卻花上大把銀子請女友吃大餐。\n\t- e. 社會外顯性：例如：戴在身上的珠寶、穿在外面的衣服，及個人所開的汽車，具高外顯性。\n3. **推敲可能性模式（ELM）**：\n\t- 說明涉入程度對於態度的形成與變化如何產生影響的一項重要理論。\n\t- 推敲可能性模式認為態度的形成有兩條路徑：中央路徑與邊陲路徑。\n\t- 一般而言，高涉入下，顧客會經由中央路徑來形成態度；但低涉入下，則偏向邊陲路徑。\n\t- 行銷策略應隨著產品的涉入程度而改變。高涉入：提供多方面且廣泛的產品資訊，如廣告。低涉入：店內的陳列與促銷，注重產品包裝設計以吸引消費者。\n\t- 中央路徑：態度的形成是來自對於產品資訊所進行的理性考慮。（整理手寫例子：牙膏防蛀）\n\t- 邊陲路徑：態度的形成則是由於將品牌與一些正面或負面的邊陲訊息相連結所致。（整理手寫例子：牙膏廣告中的美女）", "answer_norm": "涉入程度指消費者願意花在蒐集評估與決策過程中的時間多寡以及努力程度的高低影響涉入程度的五個因素先前經驗例如經常購買的產品相較於初次購買的產品其涉入程度通常較低興趣例如消費者對目前正在計畫購買的產品其涉入程度會較高風險例如高單價的產品因為財務風險高則其涉入程度也會較高情境例如有人平日省吃儉用但是情人節卻花上大把銀子請女友吃大餐社會外顯性例如戴在身上的珠寶穿在外面的衣服及個人所開的汽車具高外顯性推敲可能性模式ELM說明涉入程度對於態度的形成與變化如何產生影響的一項重要理論推敲可能性模式認為態度的形成有兩條路徑中央路徑與邊陲路徑一般而言高涉入下顧客會經由中央路徑來形成態度但低涉入下則偏向邊陲路徑行銷策略應隨著產品的涉入程度而改變高涉入提供多方面且廣泛的產品資訊如廣告低涉入店內的陳列與促銷注重產品包裝設計以吸引消費者中央路徑態度的形成是來自對於產品資訊所進行的理性考慮整理手寫例子牙膏防蛀邊陲路徑態度的形成則是由於將品牌與一些正面或負面的邊陲訊息相連結所致整理手寫例子牙膏廣告中的美女", "images": []}, {"id": "5-2", "chapter": "Ch5", "chapter_title": "Ch5 消費者市場與其購買行為", "title": "社會階級", "prompts": [{"year": "108-4", "text": "請說明社會階級的內涵？其特性為何？", "raw": "108-4 請說明社會階級的內涵？其特性為何？"}, {"year": "103-2", "text": "社會階級具有那些特性", "raw": "103-2 社會階級具有那些特性"}], "answer_raw": "社會階級：指在社會分層上被認為具有相同社會地位的一群人。\n\n社會階級特性：\n\n1. 同一社會階級往往代表著具有相同的價值、興趣與行為。\n2. 社會階級也代表著社會地位和社會聲望的高低。\n3. 社會階級是受許多變數綜合影響所致。\n4. 社會階級之間存在著流動性，意謂著社會成員可以由某一階級升降另一階級。\n5. 社會階級通常在短期間內不會有太大改變，因此具有相當的穩定性。\n6. 社會階級具有周延性與互斥性。（整理手寫註記：同一時間只能隸屬於一種社會階級）", "answer_norm": "社會階級指在社會分層上被認為具有相同社會地位的一群人社會階級特性同一社會階級往往代表著具有相同的價值興趣與行為社會階級也代表著社會地位和社會聲望的高低社會階級是受許多變數綜合影響所致社會階級之間存在著流動性意謂著社會成員可以由某一階級升降另一階級社會階級通常在短期間內不會有太大改變因此具有相當的穩定性社會階級具有周延性與互斥性整理手寫註記同一時間只能隸屬於一種社會階級", "images": []}, {"id": "5-3", "chapter": "Ch5", "chapter_title": "Ch5 消費者市場與其購買行為", "title": "費雪賓模式（Fishbein Model）", "prompts": [{"year": "107-4", "text": "請說明費雪賓模式（Fishbein Model），並說明其在行銷策略的應用方式", "raw": "107-4 請說明費雪賓模式（Fishbein Model），並說明其在行銷策略的應用方式"}, {"year": "89 專班", "text": "Fishbein Model 的內涵。", "raw": "89 專班 Fishbein Model 的內涵。"}], "answer_raw": "費雪賓模式是消費者替代方案評估的重要模式。替代方案評估的做法包括：限制喚引集合中的替代方案數目；針對產品屬性分別設計最低「門檻」；將屬性重要性排列，再依重要性高低逐一比較。\n\n$$\nA_{kj} = \\sum_{i=1}^{n} W_{ki} B_{kij}\n$$\n\nk：消費者，j：品牌，i：屬性，n：屬性的數目，W：權重，B：信念，A：態度。\n\n（整理手寫註記）消費者對產品品牌的態度，是將消費者對產品品牌屬性所抱持的信念 × 該屬性的權重，最後加總所有考慮的屬性得分而得。", "answer_norm": "費雪賓模式是消費者替代方案評估的重要模式替代方案評估的做法包括限制喚引集合中的替代方案數目針對產品屬性分別設計最低門檻將屬性重要性排列再依重要性高低逐一比較Akjsumi1nWkiBkijk消費者j品牌i屬性n屬性的數目W權重B信念A態度整理手寫註記消費者對產品品牌的態度是將消費者對產品品牌屬性所抱持的信念該屬性的權重最後加總所有考慮的屬性得分而得", "images": []}, {"id": "5-4", "chapter": "Ch5", "chapter_title": "Ch5 消費者市場與其購買行為", "title": "佛洛伊德的動機理論", "prompts": [{"year": "101-1", "text": "請說明佛洛伊德的動機理論與內涵", "raw": "101-1 請說明佛洛伊德的動機理論與內涵"}, {"year": "100-1", "text": "說明佛洛依德的動機理論的內涵。", "raw": "100-1 說明佛洛依德的動機理論的內涵。"}], "answer_raw": "佛洛伊德（Sigmund Freud）的動機理論著重潛意識的重要性，並強調購買行為背後隱藏的動機。他認為動機與人格發展有關，並主張一個人的人格發展是源於童年時期的三種系統的交互作用。\n\n1. **本我（id）**：本我追求立即的滿足。根據愉悅原則來運作，追求最大的快樂並逃避痛苦。\n2. **超我（superego）**：超我源於一個人的良心。這些良心大致上是由父母所教導並內化的社會規範，因此超我會抑制追求立即滿足的本我。\n3. **自我（ego）**：試圖平衡本我與超我的衝突。根據現實原則來運作，自我在潛意識掙扎，期盼既能滿足本我的需要，又能見容於外在的社會。", "answer_norm": "佛洛伊德SigmundFreud的動機理論著重潛意識的重要性並強調購買行為背後隱藏的動機他認為動機與人格發展有關並主張一個人的人格發展是源於童年時期的三種系統的交互作用本我id本我追求立即的滿足根據愉悅原則來運作追求最大的快樂並逃避痛苦超我superego超我源於一個人的良心這些良心大致上是由父母所教導並內化的社會規範因此超我會抑制追求立即滿足的本我自我ego試圖平衡本我與超我的衝突根據現實原則來運作自我在潛意識掙扎期盼既能滿足本我的需要又能見容於外在的社會", "images": []}, {"id": "5-5", "chapter": "Ch5", "chapter_title": "Ch5 消費者市場與其購買行為", "title": "各類學習", "prompts": [{"year": "106-2", "text": "試說明各類學習的內涵", "raw": "106-2 試說明各類學習的內涵"}], "answer_raw": "學習：指來自資訊與經驗的影響，所產生的一種行為、情感以及思想上的持久改變。\n\n1. **經驗式學習**：指透過經驗而改變行為。又稱行為學習。例如：上網購物受騙而產生恐懼的經驗。\n\t- a. 古典制約：指由於兩個刺激相伴出現，導致對某一刺激的反應轉移至另一個刺激上。例如：產品品牌常伴隨著美女出現，久而久之，對廣告美女的好感就轉移至該品牌。\n\t- b. 工具制約：指一個人經由行為結果的報酬與懲罰，來習得下次面對相同情境的反應形式。例如：某人參加某次抽獎活動抽中大獎，導致此人以後對抽獎活動的熱衷參與。\n2. **觀念式學習**：消費者藉由觀察其他人的行為與其結果，從而達成學習。又稱觀察學習。例如：新飲料上市，好朋友說這款飲料不好喝，因此決定不去嘗試新飲料。\n\n學習的相關概念：\n\n- 增強：正增強與負增強。\n- 重複：廣告的重複播放、謊話講一千遍成為真話。\n- 類化（generalization）：如名牌商品利用類化來延伸出很多商品。\n- 區別（discrimination）：學習在類似產品中作區別。", "answer_norm": "學習指來自資訊與經驗的影響所產生的一種行為情感以及思想上的持久改變經驗式學習指透過經驗而改變行為又稱行為學習例如上網購物受騙而產生恐懼的經驗古典制約指由於兩個刺激相伴出現導致對某一刺激的反應轉移至另一個刺激上例如產品品牌常伴隨著美女出現久而久之對廣告美女的好感就轉移至該品牌工具制約指一個人經由行為結果的報酬與懲罰來習得下次面對相同情境的反應形式例如某人參加某次抽獎活動抽中大獎導致此人以後對抽獎活動的熱衷參與觀念式學習消費者藉由觀察其他人的行為與其結果從而達成學習又稱觀察學習例如新飲料上市好朋友說這款飲料不好喝因此決定不去嘗試新飲料學習的相關概念增強正增強與負增強重複廣告的重複播放謊話講一千遍成為真話類化generalization如名牌商品利用類化來延伸出很多商品區別discrimination學習在類似產品中作區別", "images": []}, {"id": "5-6", "chapter": "Ch5", "chapter_title": "Ch5 消費者市場與其購買行為", "title": "影響消費者行為的微觀因素", "prompts": [{"year": "92 專班", "text": "試舉出影響消費者行為的二個微觀因素，並說明其內涵。", "raw": "92 專班 試舉出影響消費者行為的二個微觀因素，並說明其內涵。"}], "answer_raw": "內在個人因素可稱微觀面因素，包括：動機、人格特質、生活型態、價值和人口統計變數。\n\n1. **動機**：是一種個人內在的驅力，會促使個人採取行為來滿足其需要。分為功利性需要（指與產品的基本功能及物質利益有關的需要）與享樂性需要（指與追求快樂和自我實現有關的一些欲望）。動機背後的需要：自述的需要、真正的需要、未述的需要、取悅的需要、秘密的需要。\n2. **信念**：個人所擁有並認為是真實的一種對外在世界有組織的知識。例如：「愛拚才會贏」、車門關上的聲音代表堅固與安全。\n3. **價值**：指一種持續的信念，這種信念認為，就個人或社會來看，某種行為模式優於另一種行為模式。例如：及時行樂、「拜金」商品。\n4. **人格特質**：指人們內在的一些心理特性，基於這些心理特性，人們對環境存在一些持續而穩定的反應。\n5. **自我概念**：指消費者如何看待自己，包含：對自我的態度、認知、信念與自我評估。自我概念是由「理想的自我形象」與「真實的自我形象」兩者所組成。\n6. **生活型態**：是一種生活的模式，可以藉由個人的活動、興趣與意見來加以辨別。也是所謂的 AIO（activities, interests, opinions）。", "answer_norm": "內在個人因素可稱微觀面因素包括動機人格特質生活型態價值和人口統計變數動機是一種個人內在的驅力會促使個人採取行為來滿足其需要分為功利性需要指與產品的基本功能及物質利益有關的需要與享樂性需要指與追求快樂和自我實現有關的一些欲望動機背後的需要自述的需要真正的需要未述的需要取悅的需要秘密的需要信念個人所擁有並認為是真實的一種對外在世界有組織的知識例如愛拚才會贏車門關上的聲音代表堅固與安全價值指一種持續的信念這種信念認為就個人或社會來看某種行為模式優於另一種行為模式例如及時行樂拜金商品人格特質指人們內在的一些心理特性基於這些心理特性人們對環境存在一些持續而穩定的反應自我概念指消費者如何看待自己包含對自我的態度認知信念與自我評估自我概念是由理想的自我形象與真實的自我形象兩者所組成生活型態是一種生活的模式可以藉由個人的活動興趣與意見來加以辨別也是所謂的AIOactivitiesinterestsopinions", "images": []}]</script>
+
+  <!-- 應用程式邏輯 -->
+  <script>
+    (function () {
+      const STORAGE_KEY = 'marketing_quiz_state_v1';
+      const { normalizeText, calcSimilarity } = window.QuizSimilarity;
+
+      const RATING_LABELS = {
+        unfamiliar: '不熟',
+        normal: '一般',
+        familiar: '熟悉',
+      };
+
+      const state = {
+        questions: [],
+        settings: {
+          threshold: 90,
+        },
+        records: {},
+        currentQuestionId: null,
+        reviewWeakOnly: false,
+        filterUnfamiliarOnly: false,
+        activeTableCell: null,
+        currentAttempt: {
+          revealed: false,
+          submitted: false,
+          score: 0,
+          passed: false,
+          rating: null,
+          savedRecordIndex: null,
+        },
+      };
+
+      const editorEl = document.getElementById('answer-input');
+
+      // 序列化作答編輯器內容（文字與表格依序轉為字串，表格按列與欄順序展開）
+      function serializeEditorContent(rootEl) {
+        const chunks = [];
+        function walk(node) {
+          if (node.nodeType === Node.TEXT_NODE) {
+            chunks.push(node.nodeValue);
+            return;
+          }
+          if (node.nodeType !== Node.ELEMENT_NODE) return;
+          const tag = node.tagName.toUpperCase();
+          if (tag === 'TABLE') {
+            chunks.push('\n');
+            const rows = node.querySelectorAll('tr');
+            rows.forEach((tr) => {
+              const cells = Array.from(tr.querySelectorAll('th, td')).map((cell) =>
+                (cell.innerText || cell.textContent || '').replace(/\r?\n/g, ' ').trim()
+              );
+              chunks.push('| ' + cells.join(' | ') + ' |\n');
+            });
+            chunks.push('\n');
+            return;
+          }
+          if (tag === 'BR') {
+            chunks.push('\n');
+            return;
+          }
+          const isBlock = tag === 'DIV' || tag === 'P' || tag === 'LI' || tag === 'TR';
+          if (isBlock && chunks.length > 0 && !chunks[chunks.length - 1].endsWith('\n')) {
+            chunks.push('\n');
+          }
+          for (const child of node.childNodes) {
+            walk(child);
+          }
+          if (isBlock && chunks.length > 0 && !chunks[chunks.length - 1].endsWith('\n')) {
+            chunks.push('\n');
+          }
+        }
+        walk(rootEl);
+        return chunks.join('').trim();
+      }
+
+      // 讓 #answer-input 同時支援 .value 讀寫（相容純文字與含表格內容）
+      Object.defineProperty(editorEl, 'value', {
+        get() {
+          return serializeEditorContent(editorEl);
+        },
+        set(val) {
+          const str = String(val || '');
+          if (!str) {
+            editorEl.innerHTML = '';
+            state.activeTableCell = null;
+            return;
+          }
+          // 若設定的字串包含 Markdown 表格，轉為可編輯視覺化表格與一般文字
+          editorEl.innerHTML = '';
+          const fragment = buildNodesFromMarkdownOrText(str, true);
+          editorEl.appendChild(fragment);
+        },
+      });
+
+      function escapeHtml(str) {
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;');
+      }
+
+      // 將行內 Markdown **粗體** 轉為一般帶粗體文字（不露出 ** 符號）
+      function formatInlineTextToHTML(line) {
+        let safe = escapeHtml(line);
+        safe = safe.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+        return safe;
+      }
+
+      // 將標準答案 Markdown 轉為乾淨的一般文字 + 真實 HTML 表格（不顯示 **、|---| 等語法）
+      function buildNodesFromMarkdownOrText(rawText, editableTable = false) {
+        const frag = document.createDocumentFragment();
+        const lines = String(rawText || '').split(/\r?\n/);
+        let i = 0;
+        const n = lines.length;
+
+        while (i < n) {
+          const trimmed = lines[i].trim();
+
+          // 1. 略過空行
+          if (!trimmed) {
+            i++;
+            continue;
+          }
+
+          // 2. 處理 LaTeX 公式區塊 $$ ... $$
+          if (trimmed === '$$') {
+            i++;
+            const mathLines = [];
+            while (i < n && lines[i].trim() !== '$$') {
+              mathLines.push(lines[i].trim());
+              i++;
+            }
+            if (i < n && lines[i].trim() === '$$') i++;
+            const rawMath = mathLines.join(' ');
+            const div = document.createElement('div');
+            div.className = 'std-formula';
+            // 將常見的費雪賓模式 LaTeX 轉為易讀一般數學式
+            if (rawMath.includes('\\sum')) {
+              div.textContent = 'A_kj = Σ(i=1..n) W_ki × B_kij';
+            } else {
+              div.textContent = rawMath;
+            }
+            frag.appendChild(div);
+            continue;
+          }
+
+          // 3. 處理 Markdown 表格區塊 (| ... |)
+          if (trimmed.startsWith('|') && trimmed.endsWith('|')) {
+            const tableLines = [];
+            while (i < n && lines[i].trim().startsWith('|') && lines[i].trim().endsWith('|')) {
+              tableLines.push(lines[i].trim());
+              i++;
+            }
+            const parsedRows = [];
+            for (const tLine of tableLines) {
+              const inner = tLine.slice(1, -1);
+              const cells = inner.split('|').map((c) => c.trim());
+              // 略過 |---|---| 分隔列
+              if (cells.every((c) => /^:?-{2,}:?$/.test(c))) {
+                continue;
+              }
+              parsedRows.push(cells);
+            }
+            if (parsedRows.length > 0) {
+              const table = document.createElement('table');
+              table.className = editableTable ? 'user-answer-table' : 'std-table';
+              const thead = document.createElement('thead');
+              const headTr = document.createElement('tr');
+              for (const cellText of parsedRows[0]) {
+                const th = document.createElement('th');
+                th.innerHTML = formatInlineTextToHTML(cellText);
+                headTr.appendChild(th);
+              }
+              thead.appendChild(headTr);
+              table.appendChild(thead);
+
+              const tbody = document.createElement('tbody');
+              for (let r = 1; r < parsedRows.length; r++) {
+                const tr = document.createElement('tr');
+                for (const cellText of parsedRows[r]) {
+                  const td = document.createElement('td');
+                  td.innerHTML = formatInlineTextToHTML(cellText);
+                  tr.appendChild(td);
+                }
+                tbody.appendChild(tr);
+              }
+              table.appendChild(tbody);
+              frag.appendChild(table);
+            }
+            continue;
+          }
+
+          // 4. 一般文字段落與條列（去掉行首 "- " 符號，改為乾淨文字縮排）
+          const p = document.createElement('div');
+          const isSubItem = /^\s*-\s+/.test(lines[i]);
+          p.className = isSubItem ? 'std-subitem' : 'std-para';
+          let cleanLine = lines[i].replace(/^\s*-\s+/, '');
+          p.innerHTML = formatInlineTextToHTML(cleanLine);
+          frag.appendChild(p);
+          i++;
+        }
+
+        return frag;
+      }
+
+      // 在作答編輯器插入可互動的表格
+      function createInteractiveTable(rows, cols) {
+        const rCount = Math.min(30, Math.max(1, Number(rows) || 3));
+        const cCount = Math.min(12, Math.max(1, Number(cols) || 3));
+
+        const table = document.createElement('table');
+        table.className = 'user-answer-table';
+
+        const thead = document.createElement('thead');
+        const headTr = document.createElement('tr');
+        for (let c = 0; c < cCount; c++) {
+          const th = document.createElement('th');
+          th.appendChild(document.createElement('br'));
+          headTr.appendChild(th);
+        }
+        thead.appendChild(headTr);
+        table.appendChild(thead);
+
+        const tbody = document.createElement('tbody');
+        const bodyRows = Math.max(1, rCount - 1);
+        for (let r = 0; r < bodyRows; r++) {
+          const tr = document.createElement('tr');
+          for (let c = 0; c < cCount; c++) {
+            const td = document.createElement('td');
+            td.appendChild(document.createElement('br'));
+            tr.appendChild(td);
+          }
+          tbody.appendChild(tr);
+        }
+        table.appendChild(tbody);
+        return table;
+      }
+
+      function insertTableIntoEditor(rows, cols) {
+        const table = createInteractiveTable(rows, cols);
+        const beforeLine = document.createElement('div');
+        beforeLine.className = 'editor-line';
+        beforeLine.appendChild(document.createElement('br'));
+
+        const afterLine = document.createElement('div');
+        afterLine.className = 'editor-line';
+        afterLine.appendChild(document.createElement('br'));
+
+        const sel = window.getSelection();
+        if (sel && sel.rangeCount > 0 && editorEl.contains(sel.anchorNode)) {
+          // 若游標已在某張表格內，則插在該表格後方
+          let curr = sel.anchorNode;
+          while (curr && curr !== editorEl && curr.nodeName !== 'TABLE') {
+            curr = curr.parentNode;
+          }
+          if (curr && curr.nodeName === 'TABLE') {
+            curr.after(table, afterLine);
+          } else {
+            const range = sel.getRangeAt(0);
+            range.collapse(false);
+            range.insertNode(afterLine);
+            range.insertNode(table);
+          }
+        } else {
+          if (editorEl.childNodes.length === 0) {
+            editorEl.appendChild(beforeLine);
+          }
+          editorEl.appendChild(table);
+          editorEl.appendChild(afterLine);
+        }
+
+        const firstCell = table.querySelector('th, td');
+        if (firstCell) {
+          focusCell(firstCell);
+        }
+        updateCharCounter();
+      }
+
+      function focusCell(cell) {
+        if (!cell) return;
+        state.activeTableCell = cell;
+        editorEl.focus();
+        const range = document.createRange();
+        range.selectNodeContents(cell);
+        range.collapse(true);
+        const sel = window.getSelection();
+        if (sel) {
+          sel.removeAllRanges();
+          sel.addRange(range);
+        }
+      }
+
+      function getTargetTableAndCell() {
+        if (state.activeTableCell && editorEl.contains(state.activeTableCell)) {
+          const cell = state.activeTableCell;
+          const tr = cell.closest('tr');
+          const table = cell.closest('table');
+          if (table && tr) return { table, tr, cell };
+        }
+        const tables = editorEl.querySelectorAll('table');
+        if (tables.length === 0) return null;
+        const table = tables[tables.length - 1];
+        const rows = table.querySelectorAll('tr');
+        const tr = rows[rows.length - 1];
+        const cells = tr ? tr.querySelectorAll('th, td') : [];
+        const cell = cells[cells.length - 1] || null;
+        return { table, tr, cell };
+      }
+
+      function handleAddRow() {
+        const target = getTargetTableAndCell();
+        if (!target) {
+          insertTableIntoEditor(3, 3);
+          return;
+        }
+        const { table, tr } = target;
+        const colCount = tr.querySelectorAll('th, td').length || 1;
+        const newTr = document.createElement('tr');
+        for (let c = 0; c < colCount; c++) {
+          const td = document.createElement('td');
+          td.appendChild(document.createElement('br'));
+          newTr.appendChild(td);
+        }
+        let tbody = table.querySelector('tbody');
+        if (!tbody) {
+          tbody = document.createElement('tbody');
+          table.appendChild(tbody);
+        }
+        if (tr.parentElement && tr.parentElement.tagName === 'TBODY') {
+          tr.after(newTr);
+        } else {
+          tbody.prepend(newTr);
+        }
+        focusCell(newTr.querySelector('td'));
+        updateCharCounter();
+      }
+
+      function handleAddCol() {
+        const target = getTargetTableAndCell();
+        if (!target) {
+          insertTableIntoEditor(3, 3);
+          return;
+        }
+        const { table, cell } = target;
+        const cellIndex = cell ? Array.from(cell.parentElement.children).indexOf(cell) : -1;
+        const rows = table.querySelectorAll('tr');
+        rows.forEach((row) => {
+          const isHeader = row.parentElement && row.parentElement.tagName === 'THEAD';
+          const newCell = document.createElement(isHeader ? 'th' : 'td');
+          newCell.appendChild(document.createElement('br'));
+          const children = row.children;
+          if (cellIndex >= 0 && cellIndex < children.length) {
+            children[cellIndex].after(newCell);
+          } else {
+            row.appendChild(newCell);
+          }
+        });
+        updateCharCounter();
+      }
+
+      function handleDeleteRow() {
+        const target = getTargetTableAndCell();
+        if (!target) return;
+        const { table, tr } = target;
+        const allRows = table.querySelectorAll('tr');
+        if (allRows.length <= 1) {
+          table.remove();
+          state.activeTableCell = null;
+        } else {
+          const nextTr = tr.nextElementSibling || tr.previousElementSibling;
+          tr.remove();
+          const nextCell = (nextTr || table).querySelector('th, td');
+          state.activeTableCell = nextCell || null;
+        }
+        updateCharCounter();
+      }
+
+      function handleDeleteCol() {
+        const target = getTargetTableAndCell();
+        if (!target) return;
+        const { table, cell } = target;
+        if (!cell) return;
+        const colIdx = Array.from(cell.parentElement.children).indexOf(cell);
+        const firstRowCells = table.querySelector('tr').querySelectorAll('th, td');
+        if (firstRowCells.length <= 1) {
+          table.remove();
+          state.activeTableCell = null;
+        } else {
+          table.querySelectorAll('tr').forEach((row) => {
+            if (row.children[colIdx]) {
+              row.children[colIdx].remove();
+            }
+          });
+          state.activeTableCell = table.querySelector('th, td');
+        }
+        updateCharCounter();
+      }
+
+      function handleDeleteTable() {
+        const target = getTargetTableAndCell();
+        if (!target) return;
+        target.table.remove();
+        state.activeTableCell = null;
+        updateCharCounter();
+      }
+
+      function loadStorage() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return;
+          const parsed = JSON.parse(raw);
+          if (parsed && typeof parsed === 'object') {
+            if (parsed.settings && typeof parsed.settings.threshold === 'number') {
+              state.settings.threshold = Math.min(100, Math.max(10, parsed.settings.threshold));
+            }
+            if (parsed.records && typeof parsed.records === 'object') {
+              state.records = parsed.records;
+            }
+          }
+        } catch (err) {
+          console.error('Failed to load localStorage:', err);
+        }
+      }
+
+      function saveStorage() {
+        try {
+          const payload = {
+            settings: state.settings,
+            records: state.records,
+          };
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+        } catch (err) {
+          console.error('Failed to save localStorage:', err);
+        }
+      }
+
+      function getQuestionAttempts(qId) {
+        return Array.isArray(state.records[qId]) ? state.records[qId] : [];
+      }
+
+      function computeWeaknessScore(q, now = Date.now()) {
+        const attempts = getQuestionAttempts(q.id);
+        if (attempts.length === 0) {
+          return 50;
+        }
+        const latest = attempts[attempts.length - 1];
+        let ratingWeight = 35;
+        if (latest.rating === 'unfamiliar') ratingWeight = 70;
+        else if (latest.rating === 'normal') ratingWeight = 40;
+        else if (latest.rating === 'familiar') ratingWeight = 5;
+
+        let outcomeWeight = 0;
+        if (!latest.passed) outcomeWeight += 18;
+        if (latest.revealed) outcomeWeight += 12;
+        outcomeWeight += Math.max(0, (100 - (latest.score || 0)) * 0.1);
+
+        const daysSince = Math.max(0, (now - (latest.ts || now)) / (1000 * 60 * 60 * 24));
+        const stalenessWeight = Math.min(20, daysSince * 2);
+
+        return ratingWeight + outcomeWeight + stalenessWeight;
+      }
+
+      function getSortedQuestions(weakOnly = false) {
+        const now = Date.now();
+        let list = state.questions.slice();
+        if (weakOnly) {
+          list = list.filter((q) => {
+            const attempts = getQuestionAttempts(q.id);
+            if (attempts.length === 0) return false;
+            const latest = attempts[attempts.length - 1];
+            return latest.rating === 'unfamiliar' || latest.rating === 'normal';
+          });
+        }
+        list.sort((a, b) => {
+          const diff = computeWeaknessScore(b, now) - computeWeaknessScore(a, now);
+          if (Math.abs(diff) > 1e-6) return diff;
+          return a.id.localeCompare(b.id, 'zh-Hant', { numeric: true });
+        });
+        return list;
+      }
+
+      function formatDate(ts) {
+        if (!ts) return '—';
+        const d = new Date(ts);
+        const yyyy = d.getFullYear();
+        const mm = String(d.getMonth() + 1).padStart(2, '0');
+        const dd = String(d.getDate()).padStart(2, '0');
+        const hh = String(d.getHours()).padStart(2, '0');
+        const min = String(d.getMinutes()).padStart(2, '0');
+        return `${yyyy}-${mm}-${dd} ${hh}:${min}`;
+      }
+
+      function updateHeaderBadges() {
+        document.getElementById('nav-bank-badge').textContent = `題庫：${state.questions.length} 題`;
+        document.getElementById('nav-threshold-badge').textContent = `門檻：${state.settings.threshold}%`;
+      }
+
+      function renderQuestionSelect() {
+        const select = document.getElementById('question-select');
+        const pool = getSortedQuestions(state.reviewWeakOnly);
+        select.innerHTML = '';
+        for (const q of pool) {
+          const opt = document.createElement('option');
+          opt.value = q.id;
+          const attempts = getQuestionAttempts(q.id);
+          const latest = attempts[attempts.length - 1];
+          const tag = latest ? `[${RATING_LABELS[latest.rating] || '已練'}]` : '[未練]';
+          opt.textContent = `${q.chapter} | ${q.id} ${q.title} ${tag}`;
+          if (q.id === state.currentQuestionId) opt.selected = true;
+          select.appendChild(opt);
+        }
+      }
+
+      function startQuestion(qId, preserveMode = true) {
+        if (!preserveMode) {
+          state.reviewWeakOnly = false;
+        }
+        const pool = getSortedQuestions(state.reviewWeakOnly);
+        const emptyBox = document.getElementById('practice-empty');
+        const contentBox = document.getElementById('practice-content');
+        const modeBadge = document.getElementById('practice-mode-badge');
+        const exitBtn = document.getElementById('btn-exit-review');
+
+        if (state.reviewWeakOnly) {
+          modeBadge.textContent = '複習模式（只複習不熟＋一般）';
+          modeBadge.className = 'badge badge-warning';
+          exitBtn.classList.remove('hidden');
+        } else {
+          modeBadge.textContent = '一般模式（弱點優先）';
+          modeBadge.className = 'badge badge-neutral';
+          exitBtn.classList.add('hidden');
+        }
+
+        if (pool.length === 0) {
+          emptyBox.classList.remove('hidden');
+          contentBox.classList.add('hidden');
+          renderQuestionSelect();
+          return;
+        }
+
+        emptyBox.classList.add('hidden');
+        contentBox.classList.remove('hidden');
+
+        let target = pool.find((q) => q.id === qId) || pool[0];
+        state.currentQuestionId = target.id;
+
+        state.currentAttempt = {
+          revealed: false,
+          submitted: false,
+          score: 0,
+          passed: false,
+          rating: null,
+          savedRecordIndex: null,
+        };
+
+        renderQuestionSelect();
+        renderCurrentQuestionUI(target);
+      }
+
+      function renderCurrentQuestionUI(q) {
+        document.getElementById('q-chapter').textContent = q.chapter_title || q.chapter;
+        document.getElementById('q-title').textContent = `${q.id} ${q.title}`;
+
+        // 一次列出本主題所有歷屆考題問法
+        const promptHeader = document.getElementById('q-prompt-header');
+        const promptListEl = document.getElementById('q-prompt-list');
+        promptListEl.innerHTML = '';
+        const prompts = Array.isArray(q.prompts) && q.prompts.length > 0
+          ? q.prompts
+          : [{ year: '', text: q.title }];
+
+        promptHeader.textContent = `歷屆考古題問法（共 ${prompts.length} 題）`;
+        for (const p of prompts) {
+          const li = document.createElement('li');
+          li.className = 'prompt-item';
+          if (p.year) {
+            const yearBadge = document.createElement('span');
+            yearBadge.className = 'year-badge';
+            yearBadge.textContent = p.year;
+            li.appendChild(yearBadge);
+          }
+          const textSpan = document.createElement('span');
+          textSpan.textContent = p.text;
+          li.appendChild(textSpan);
+          promptListEl.appendChild(li);
+        }
+
+        editorEl.value = '';
+        updateCharCounter();
+
+        document.getElementById('revealed-notice').classList.add('hidden');
+        document.getElementById('result-box').classList.add('hidden');
+        document.getElementById('standard-answer-section').classList.add('hidden');
+        document.getElementById('rating-box').classList.add('hidden');
+        document.getElementById('rating-saved-msg').classList.add('hidden');
+        syncRevealButtonState(false);
+
+        document.querySelectorAll('.btn-rate').forEach((btn) => {
+          btn.classList.remove('selected');
+        });
+
+        // 將標準答案渲染為一般文字 + HTML 表格（不顯示 Markdown 符號）
+        const stdBox = document.getElementById('standard-answer-text');
+        stdBox.innerHTML = '';
+        stdBox.appendChild(buildNodesFromMarkdownOrText(q.answer_raw, false));
+
+        const imgContainer = document.getElementById('standard-answer-images');
+        imgContainer.innerHTML = '';
+        if (Array.isArray(q.images) && q.images.length > 0) {
+          for (const imgPath of q.images) {
+            const img = document.createElement('img');
+            img.src = imgPath;
+            img.alt = `${q.title} 課本附圖`;
+            img.loading = 'lazy';
+            imgContainer.appendChild(img);
+          }
+        }
+      }
+
+      function updateCharCounter() {
+        const q = state.questions.find((item) => item.id === state.currentQuestionId);
+        if (!q) return;
+        const raw = editorEl.value;
+        const normLen = normalizeText(raw).length;
+        const targetLen = (q.answer_norm || normalizeText(q.answer_raw)).length;
+        document.getElementById('char-counter').textContent =
+          `已輸入 ${raw.length} 字（正規化後 ${normLen} 字 / 標準答案 ${targetLen} 字）`;
+      }
+
+      function syncRevealButtonState(isOpen) {
+        const btn = document.getElementById('btn-reveal');
+        if (!btn) return;
+        btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        btn.textContent = isOpen ? '隱藏答案 ▴' : '顯示答案 ▾';
+      }
+
+      function handleRevealAnswer() {
+        const q = state.questions.find((item) => item.id === state.currentQuestionId);
+        if (!q) return;
+
+        const sectionEl = document.getElementById('standard-answer-section');
+        const isCurrentlyOpen = !sectionEl.classList.contains('hidden');
+
+        if (isCurrentlyOpen) {
+          // 收起標準答案
+          sectionEl.classList.add('hidden');
+          syncRevealButtonState(false);
+          return;
+        }
+
+        // 展開標準答案：若尚未送出就先看答案，記為「看過答案」
+        sectionEl.classList.remove('hidden');
+        syncRevealButtonState(true);
+
+        if (!state.currentAttempt.submitted) {
+          state.currentAttempt.revealed = true;
+          state.currentAttempt.passed = false;
+          document.getElementById('revealed-notice').classList.remove('hidden');
+          document.getElementById('rating-box').classList.remove('hidden');
+        }
+
+        if (state.currentAttempt.revealed && state.currentAttempt.submitted) {
+          const badge = document.getElementById('pass-badge');
+          badge.textContent = '看過答案（不計通過）';
+          badge.className = 'badge badge-warning';
+        }
+
+        if (state.currentAttempt.savedRecordIndex !== null && state.currentAttempt.rating) {
+          saveOrUpdateAttemptRecord(state.currentAttempt.rating);
+        }
+      }
+
+      function handleSubmitAnswer() {
+        const q = state.questions.find((item) => item.id === state.currentQuestionId);
+        if (!q) return;
+
+        const userRaw = editorEl.value;
+        const res = calcSimilarity(userRaw, q.answer_raw, q.answer_norm);
+
+        state.currentAttempt.submitted = true;
+        state.currentAttempt.score = res.percent;
+        const threshold = state.settings.threshold;
+        const passed = !state.currentAttempt.revealed && res.percent >= threshold;
+        state.currentAttempt.passed = passed;
+
+        const scoreEl = document.getElementById('score-value');
+        scoreEl.textContent = `${res.percent}%`;
+        scoreEl.style.color = passed
+          ? 'var(--success)'
+          : res.percent >= threshold
+          ? 'var(--warning)'
+          : 'var(--danger)';
+
+        const badge = document.getElementById('pass-badge');
+        if (state.currentAttempt.revealed) {
+          badge.textContent = `看過答案（不計通過，相似度 ${res.percent}%）`;
+          badge.className = 'badge badge-warning';
+        } else if (passed) {
+          badge.textContent = `通過（≥ ${threshold}%）`;
+          badge.className = 'badge badge-success';
+        } else {
+          badge.textContent = `未通過（未達 ${threshold}%）`;
+          badge.className = 'badge badge-danger';
+        }
+
+        document.getElementById('distance-info').textContent =
+          `編輯距離：${res.distance}｜你的字數：${res.userNorm.length}｜標準答案字數：${res.answerNorm.length}`;
+
+        const diffEl = document.getElementById('diff-output');
+        diffEl.innerHTML = '';
+        for (const part of res.diff) {
+          if (part.type === 'match') {
+            diffEl.appendChild(document.createTextNode(part.text));
+          } else if (part.type === 'missing') {
+            const span = document.createElement('span');
+            span.className = 'diff-missing';
+            span.textContent = part.text;
+            diffEl.appendChild(span);
+          } else if (part.type === 'extra') {
+            const del = document.createElement('del');
+            del.className = 'diff-extra';
+            del.textContent = part.text;
+            diffEl.appendChild(del);
+          }
+        }
+
+        document.getElementById('result-box').classList.remove('hidden');
+        document.getElementById('standard-answer-section').classList.remove('hidden');
+        document.getElementById('rating-box').classList.remove('hidden');
+        syncRevealButtonState(true);
+
+        if (state.currentAttempt.savedRecordIndex !== null && state.currentAttempt.rating) {
+          saveOrUpdateAttemptRecord(state.currentAttempt.rating);
+        }
+      }
+
+      function saveOrUpdateAttemptRecord(rating) {
+        const qId = state.currentQuestionId;
+        if (!qId || !rating) return;
+
+        state.currentAttempt.rating = rating;
+        if (!Array.isArray(state.records[qId])) {
+          state.records[qId] = [];
+        }
+
+        const record = {
+          ts: Date.now(),
+          score: state.currentAttempt.submitted ? state.currentAttempt.score : 0,
+          passed: Boolean(state.currentAttempt.passed && !state.currentAttempt.revealed),
+          revealed: Boolean(state.currentAttempt.revealed),
+          rating,
+        };
+
+        if (
+          state.currentAttempt.savedRecordIndex !== null &&
+          state.records[qId][state.currentAttempt.savedRecordIndex]
+        ) {
+          state.records[qId][state.currentAttempt.savedRecordIndex] = record;
+        } else {
+          state.records[qId].push(record);
+          state.currentAttempt.savedRecordIndex = state.records[qId].length - 1;
+        }
+
+        saveStorage();
+
+        document.querySelectorAll('.btn-rate').forEach((btn) => {
+          btn.classList.toggle('selected', btn.dataset.rating === rating);
+        });
+
+        const msgEl = document.getElementById('rating-saved-msg');
+        msgEl.textContent = `已儲存紀錄（評級：${RATING_LABELS[rating]}，分數：${record.score}%）`;
+        msgEl.classList.remove('hidden');
+
+        renderQuestionSelect();
+      }
+
+      function handleNextQuestion() {
+        const pool = getSortedQuestions(state.reviewWeakOnly);
+        if (pool.length === 0) {
+          startQuestion(null, true);
+          return;
+        }
+        const currentIdx = pool.findIndex((q) => q.id === state.currentQuestionId);
+        const nextQuestion = pool[(currentIdx + 1) % pool.length] || pool[0];
+        startQuestion(nextQuestion.id, true);
+      }
+
+      function renderDashboard() {
+        const total = state.questions.length;
+        let practicedCount = 0;
+        let passedCount = 0;
+        let weakCount = 0;
+
+        for (const q of state.questions) {
+          const attempts = getQuestionAttempts(q.id);
+          if (attempts.length > 0) {
+            practicedCount++;
+            const latest = attempts[attempts.length - 1];
+            if (attempts.some((a) => a.passed && !a.revealed)) {
+              passedCount++;
+            }
+            if (latest.rating === 'unfamiliar' || latest.rating === 'normal') {
+              weakCount++;
+            }
+          }
+        }
+
+        document.getElementById('stat-total').textContent = String(total);
+        document.getElementById('stat-practiced').textContent = `${practicedCount} / ${total}`;
+        document.getElementById('stat-passed').textContent = String(passedCount);
+        document.getElementById('stat-weak').textContent = String(weakCount);
+
+        const sorted = getSortedQuestions(false);
+        const filtered = state.filterUnfamiliarOnly
+          ? sorted.filter((q) => {
+              const attempts = getQuestionAttempts(q.id);
+              const latest = attempts[attempts.length - 1];
+              return latest && latest.rating === 'unfamiliar';
+            })
+          : sorted;
+
+        const tbody = document.getElementById('dashboard-tbody');
+        tbody.innerHTML = '';
+
+        if (filtered.length === 0) {
+          const tr = document.createElement('tr');
+          const td = document.createElement('td');
+          td.colSpan = 8;
+          td.style.textAlign = 'center';
+          td.style.padding = '2rem';
+          td.style.color = 'var(--text-muted)';
+          td.textContent = state.filterUnfamiliarOnly
+            ? '目前沒有評為「不熟」的主題。'
+            : '題庫尚無資料。';
+          tr.appendChild(td);
+          tbody.appendChild(tr);
+          return;
+        }
+
+        for (const q of filtered) {
+          const attempts = getQuestionAttempts(q.id);
+          const latest = attempts[attempts.length - 1] || null;
+          const bestScore = attempts.length > 0
+            ? Math.max(...attempts.map((a) => Number(a.score) || 0))
+            : null;
+
+          const tr = document.createElement('tr');
+          tr.dataset.questionId = q.id;
+
+          const tdCh = document.createElement('td');
+          tdCh.innerHTML = `<span class="chapter-badge">${q.chapter}</span>`;
+          tr.appendChild(tdCh);
+
+          const tdTitle = document.createElement('td');
+          tdTitle.style.fontWeight = '600';
+          tdTitle.textContent = `${q.id} ${q.title}`;
+          tr.appendChild(tdTitle);
+
+          const tdRating = document.createElement('td');
+          if (!latest) {
+            tdRating.innerHTML = `<span class="badge badge-neutral">未練習</span>`;
+          } else if (latest.rating === 'unfamiliar') {
+            tdRating.innerHTML = `<span class="badge badge-danger">不熟</span>`;
+          } else if (latest.rating === 'normal') {
+            tdRating.innerHTML = `<span class="badge badge-warning">一般</span>`;
+          } else {
+            tdRating.innerHTML = `<span class="badge badge-success">熟悉</span>`;
+          }
+          tr.appendChild(tdRating);
+
+          const tdScore = document.createElement('td');
+          if (!latest) {
+            tdScore.textContent = '—';
+          } else {
+            tdScore.textContent = `${latest.score}% / ${bestScore}%`;
+          }
+          tr.appendChild(tdScore);
+
+          const tdCount = document.createElement('td');
+          tdCount.textContent = String(attempts.length);
+          tr.appendChild(tdCount);
+
+          const tdRevealed = document.createElement('td');
+          if (!latest) {
+            tdRevealed.textContent = '—';
+          } else {
+            tdRevealed.textContent = latest.revealed ? '是' : '否';
+          }
+          tr.appendChild(tdRevealed);
+
+          const tdDate = document.createElement('td');
+          tdDate.textContent = latest ? formatDate(latest.ts) : '—';
+          tr.appendChild(tdDate);
+
+          const tdAction = document.createElement('td');
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'btn-outline';
+          btn.style.padding = '0.3rem 0.65rem';
+          btn.style.fontSize = '0.82rem';
+          btn.textContent = '練習';
+          btn.addEventListener('click', () => {
+            state.reviewWeakOnly = false;
+            state.currentQuestionId = q.id;
+            window.location.hash = `#/practice?id=${encodeURIComponent(q.id)}`;
+          });
+          tdAction.appendChild(btn);
+          tr.appendChild(tdAction);
+
+          tbody.appendChild(tr);
+        }
+      }
+
+      function renderSettings() {
+        document.getElementById('input-threshold').value = String(state.settings.threshold);
+        const exportPayload = {
+          version: 1,
+          exportedAt: new Date().toISOString(),
+          settings: state.settings,
+          records: state.records,
+        };
+        document.getElementById('backup-json-textarea').value = JSON.stringify(exportPayload, null, 2);
+        document.getElementById('backup-status-msg').textContent = '';
+      }
+
+      function handleRoute() {
+        const hash = window.location.hash || '#/practice';
+        const [pathPart, queryPart] = hash.replace(/^#/, '').split('?');
+        const route = pathPart || '/practice';
+        const params = new URLSearchParams(queryPart || '');
+
+        const views = {
+          '/practice': document.getElementById('view-practice'),
+          '/dashboard': document.getElementById('view-dashboard'),
+          '/settings': document.getElementById('view-settings'),
+        };
+        const tabs = {
+          '/practice': document.getElementById('tab-practice'),
+          '/dashboard': document.getElementById('tab-dashboard'),
+          '/settings': document.getElementById('tab-settings'),
+        };
+
+        const activeRoute = views[route] ? route : '/practice';
+        Object.keys(views).forEach((k) => {
+          views[k].classList.toggle('hidden', k !== activeRoute);
+          tabs[k].classList.toggle('active', k === activeRoute);
+        });
+
+        if (activeRoute === '/practice') {
+          if (params.get('mode') === 'weak') {
+            state.reviewWeakOnly = true;
+          }
+          const targetId = params.get('id') || state.currentQuestionId;
+          startQuestion(targetId, true);
+        } else if (activeRoute === '/dashboard') {
+          renderDashboard();
+        } else if (activeRoute === '/settings') {
+          renderSettings();
+        }
+      }
+
+      function importBackupObject(obj) {
+        if (!obj || typeof obj !== 'object') {
+          throw new Error('無效的 JSON 物件格式');
+        }
+        if (obj.settings && typeof obj.settings.threshold === 'number') {
+          state.settings.threshold = Math.min(100, Math.max(10, obj.settings.threshold));
+        }
+        if (obj.records && typeof obj.records === 'object') {
+          state.records = obj.records;
+        } else {
+          throw new Error('備份中缺少 records 欄位');
+        }
+        saveStorage();
+        updateHeaderBadges();
+        renderSettings();
+      }
+
+      function initGridPicker() {
+        const toggleBtn = document.getElementById('btn-toggle-grid');
+        const popover = document.getElementById('grid-picker-popover');
+        const label = document.getElementById('grid-picker-label');
+        const cellsContainer = document.getElementById('grid-picker-cells');
+
+        const MAX_R = 8;
+        const MAX_C = 6;
+
+        cellsContainer.innerHTML = '';
+        const allCells = [];
+        for (let r = 1; r <= MAX_R; r++) {
+          for (let c = 1; c <= MAX_C; c++) {
+            const cell = document.createElement('div');
+            cell.className = 'grid-picker-cell';
+            cell.dataset.r = String(r);
+            cell.dataset.c = String(c);
+            cell.addEventListener('mouseenter', () => {
+              label.textContent = `選擇表格大小：${r} 列 × ${c} 欄`;
+              document.getElementById('tbl-rows-input').value = String(r);
+              document.getElementById('tbl-cols-input').value = String(c);
+              for (const item of allCells) {
+                const ir = Number(item.dataset.r);
+                const ic = Number(item.dataset.c);
+                item.classList.toggle('active', ir <= r && ic <= c);
+              }
+            });
+            cell.addEventListener('click', () => {
+              popover.classList.add('hidden');
+              insertTableIntoEditor(r, c);
+            });
+            cellsContainer.appendChild(cell);
+            allCells.push(cell);
+          }
+        }
+
+        toggleBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          popover.classList.toggle('hidden');
+        });
+
+        document.addEventListener('click', (e) => {
+          if (!popover.contains(e.target) && e.target !== toggleBtn) {
+            popover.classList.add('hidden');
+          }
+        });
+      }
+
+      function bindEvents() {
+        window.addEventListener('hashchange', handleRoute);
+
+        initGridPicker();
+
+        document.getElementById('question-select').addEventListener('change', (e) => {
+          startQuestion(e.target.value, true);
+        });
+
+        // 綁定畫表格工具列按鈕
+        document.getElementById('btn-insert-table').addEventListener('click', () => {
+          const r = Number(document.getElementById('tbl-rows-input').value) || 4;
+          const c = Number(document.getElementById('tbl-cols-input').value) || 3;
+          insertTableIntoEditor(r, c);
+        });
+        document.getElementById('btn-add-row').addEventListener('click', handleAddRow);
+        document.getElementById('btn-add-col').addEventListener('click', handleAddCol);
+        document.getElementById('btn-del-row').addEventListener('click', handleDeleteRow);
+        document.getElementById('btn-del-col').addEventListener('click', handleDeleteCol);
+        document.getElementById('btn-del-table').addEventListener('click', handleDeleteTable);
+        document.getElementById('btn-clear-editor').addEventListener('click', () => {
+          editorEl.value = '';
+          updateCharCounter();
+          editorEl.focus();
+        });
+
+        // 追蹤游標目前所在的表格儲存格 & 支援 Tab / Shift+Tab 在儲存格間切換
+        editorEl.addEventListener('click', (e) => {
+          const cell = e.target.closest ? e.target.closest('th, td') : null;
+          if (cell && editorEl.contains(cell)) {
+            state.activeTableCell = cell;
+          }
+        });
+
+        editorEl.addEventListener('keyup', () => {
+          const sel = window.getSelection();
+          if (sel && sel.anchorNode) {
+            const el = sel.anchorNode.nodeType === Node.ELEMENT_NODE
+              ? sel.anchorNode
+              : sel.anchorNode.parentElement;
+            const cell = el && el.closest ? el.closest('th, td') : null;
+            if (cell && editorEl.contains(cell)) {
+              state.activeTableCell = cell;
+            }
+          }
+          updateCharCounter();
+        });
+
+        editorEl.addEventListener('keydown', (e) => {
+          if (e.key !== 'Tab') return;
+          const sel = window.getSelection();
+          if (!sel || !sel.anchorNode) return;
+          const el = sel.anchorNode.nodeType === Node.ELEMENT_NODE
+            ? sel.anchorNode
+            : sel.anchorNode.parentElement;
+          const cell = el && el.closest ? el.closest('th, td') : null;
+          if (!cell || !editorEl.contains(cell)) return;
+
+          e.preventDefault();
+          const table = cell.closest('table');
+          const cells = Array.from(table.querySelectorAll('th, td'));
+          const idx = cells.indexOf(cell);
+          if (e.shiftKey) {
+            if (idx > 0) focusCell(cells[idx - 1]);
+          } else {
+            if (idx >= 0 && idx < cells.length - 1) {
+              focusCell(cells[idx + 1]);
+            } else {
+              // 在最後一格按 Tab 自動新增下一列並跳至新列第一格
+              state.activeTableCell = cell;
+              handleAddRow();
+            }
+          }
+        });
+
+        editorEl.addEventListener('input', updateCharCounter);
+        editorEl.addEventListener('paste', (e) => {
+          const text = e.clipboardData ? e.clipboardData.getData('text/plain') : '';
+          if (!text) return;
+          // 若貼上的文字含有 Markdown 表格或粗體符號，自動轉為視覺化表格與一般文字
+          if ((text.includes('|') && /\|.*\|/.test(text)) || text.includes('**')) {
+            e.preventDefault();
+            const frag = buildNodesFromMarkdownOrText(text, true);
+            const sel = window.getSelection();
+            if (sel && sel.rangeCount > 0 && editorEl.contains(sel.anchorNode)) {
+              const range = sel.getRangeAt(0);
+              range.deleteContents();
+              range.insertNode(frag);
+              range.collapse(false);
+            } else {
+              editorEl.appendChild(frag);
+            }
+            updateCharCounter();
+          }
+        });
+        document.getElementById('btn-reveal').addEventListener('click', handleRevealAnswer);
+        document.getElementById('btn-submit').addEventListener('click', handleSubmitAnswer);
+        document.getElementById('btn-next').addEventListener('click', handleNextQuestion);
+
+        document.getElementById('btn-copy-answer').addEventListener('click', async () => {
+          const q = state.questions.find((item) => item.id === state.currentQuestionId);
+          if (!q) return;
+          try {
+            await navigator.clipboard.writeText(q.answer_raw);
+            const btn = document.getElementById('btn-copy-answer');
+            btn.textContent = '已複製！';
+            setTimeout(() => {
+              btn.textContent = '複製標準答案';
+            }, 1500);
+          } catch (_) {
+            // fallback
+          }
+        });
+
+        document.querySelectorAll('.btn-rate').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            saveOrUpdateAttemptRecord(btn.dataset.rating);
+          });
+        });
+
+        document.getElementById('btn-exit-review').addEventListener('click', () => {
+          state.reviewWeakOnly = false;
+          window.location.hash = '#/practice';
+          startQuestion(null, false);
+        });
+
+        document.getElementById('btn-empty-back').addEventListener('click', () => {
+          state.reviewWeakOnly = false;
+          window.location.hash = '#/practice';
+          startQuestion(null, false);
+        });
+
+        document.getElementById('filter-unfamiliar').addEventListener('change', (e) => {
+          state.filterUnfamiliarOnly = e.target.checked;
+          renderDashboard();
+        });
+
+        document.getElementById('btn-review-weak').addEventListener('click', () => {
+          state.reviewWeakOnly = true;
+          state.currentQuestionId = null;
+          window.location.hash = '#/practice?mode=weak';
+          handleRoute();
+        });
+
+        document.getElementById('btn-save-threshold').addEventListener('click', () => {
+          const val = Number(document.getElementById('input-threshold').value);
+          if (!Number.isFinite(val) || val < 10 || val > 100) return;
+          state.settings.threshold = Math.round(val);
+          saveStorage();
+          updateHeaderBadges();
+          const msg = document.getElementById('threshold-saved-msg');
+          msg.classList.remove('hidden');
+          setTimeout(() => msg.classList.add('hidden'), 1800);
+        });
+
+        document.getElementById('btn-export-json').addEventListener('click', () => {
+          const payload = {
+            version: 1,
+            exportedAt: new Date().toISOString(),
+            settings: state.settings,
+            records: state.records,
+          };
+          const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `marketing-quiz-backup-${new Date().toISOString().slice(0, 10)}.json`;
+          a.click();
+          URL.revokeObjectURL(url);
+        });
+
+        document.getElementById('input-import-file').addEventListener('change', (e) => {
+          const file = e.target.files && e.target.files[0];
+          if (!file) return;
+          const reader = new FileReader();
+          reader.onload = () => {
+            try {
+              const obj = JSON.parse(String(reader.result));
+              importBackupObject(obj);
+              const statusEl = document.getElementById('backup-status-msg');
+              statusEl.style.color = 'var(--success)';
+              statusEl.textContent = '已成功從檔案匯入備份！';
+            } catch (err) {
+              const statusEl = document.getElementById('backup-status-msg');
+              statusEl.style.color = 'var(--danger)';
+              statusEl.textContent = `匯入失敗：${err.message}`;
+            }
+          };
+          reader.readAsText(file);
+        });
+
+        document.getElementById('btn-import-text').addEventListener('click', () => {
+          const text = document.getElementById('backup-json-textarea').value;
+          const statusEl = document.getElementById('backup-status-msg');
+          try {
+            const obj = JSON.parse(text);
+            importBackupObject(obj);
+            statusEl.style.color = 'var(--success)';
+            statusEl.textContent = '已成功從文字框匯入備份！';
+          } catch (err) {
+            statusEl.style.color = 'var(--danger)';
+            statusEl.textContent = `匯入失敗：${err.message}`;
+          }
+        });
+
+        document.getElementById('btn-clear-records').addEventListener('click', () => {
+          state.records = {};
+          saveStorage();
+          renderSettings();
+          const statusEl = document.getElementById('backup-status-msg');
+          statusEl.style.color = 'var(--warning)';
+          statusEl.textContent = '已清除所有練習紀錄。';
+        });
+      }
+
+      async function init() {
+        loadStorage();
+        bindEvents();
+        try {
+          let loaded = null;
+          try {
+            const resp = await fetch('data/questions.json');
+            if (resp.ok) {
+              loaded = await resp.json();
+            }
+          } catch (_) {
+            // 直接雙擊 index.html (file://) 時瀏覽器會因 CORS 阻擋 fetch，改讀取內嵌題庫備援
+          }
+          if (!loaded) {
+            const fallbackEl = document.getElementById('questions-fallback');
+            if (fallbackEl && fallbackEl.textContent.trim()) {
+              loaded = JSON.parse(fallbackEl.textContent);
+            }
+          }
+          if (!Array.isArray(loaded) || loaded.length === 0) {
+            throw new Error('題庫為空或無法讀取');
+          }
+          state.questions = loaded;
+          updateHeaderBadges();
+          handleRoute();
+        } catch (err) {
+          console.error('載入題庫失敗:', err);
+          document.getElementById('nav-bank-badge').textContent = '題庫載入失敗';
+        }
+      }
+
+      init();
+    })();
+  </script>
+</body>
+</html>
