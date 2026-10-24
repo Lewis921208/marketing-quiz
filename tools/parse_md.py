@@ -12,6 +12,8 @@ import shutil
 import unicodedata
 from pathlib import Path
 
+from study_guides import STUDY_GUIDES
+
 DEMO_IDS = ["1-1", "2-1", "3-1", "5-1"]
 
 DEFAULT_VAULT_DIR = Path(
@@ -221,6 +223,7 @@ def parse_markdown(
                     "answer_raw": answer_raw,
                     "answer_norm": answer_norm,
                     "images": copied_images,
+                    "study_guide": STUDY_GUIDES.get(q_id, {}),
                 }
             )
             continue
