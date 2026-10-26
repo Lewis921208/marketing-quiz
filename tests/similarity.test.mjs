@@ -87,17 +87,34 @@ const sampleAnswer = `
   console.log(`PASS 5: 多寫扣分 (${res.percent}%) 且 LCS 正確標出刪除線`);
 }
 
-// 6. 驗證 data/questions.json 中 parse_md.py 產出的 answer_norm 與前端 JS normalizeText 完全一致
+// 6. 表格與數學公式不納入比對（使用者僅輸入文字段落應得 100%）
+{
+  const answerWithTableAndMath = `
+1. 賣我們的產品：此即銷售觀念。
+| 觀念 | 出發點 |
+| --- | --- |
+| 銷售觀念 | 工廠 |
+$$ A_{kj} = \\sum_{i=1}^{n} W_{ki} B_{kij} $$
+2. 製造我們能夠銷售的產品：此即行銷觀念。
+`;
+  const userTextOnly = '賣我們的產品：此即銷售觀念。製造我們能夠銷售的產品：此即行銷觀念。';
+  const res = calcSimilarity(userTextOnly, answerWithTableAndMath);
+  assert.equal(res.percent, 100, `僅輸入文字段落（忽略表格與公式）應得 100%，實得 ${res.percent}%`);
+  console.log('PASS 6: 忽略 Markdown 表格與 LaTeX 公式僅比對文字 = 100%');
+}
+
+// 7. 驗證 data/questions.json 中 parse_md.py 產出的 answer_norm 與前端 JS normalizeText 完全一致
 if (fs.existsSync(questionsJsonPath)) {
   const questions = JSON.parse(fs.readFileSync(questionsJsonPath, 'utf-8'));
   assert.ok(Array.isArray(questions) && questions.length > 0, 'questions.json 應為非空陣列');
   for (const q of questions) {
     assert.ok(q.answer_raw && q.answer_raw.length > 0, `題目 ${q.id} answer_raw 不可為空`);
+    assert.ok(q.answer_norm && q.answer_norm.length > 0, `題目 ${q.id} answer_norm 不可為空`);
     assert.ok(Array.isArray(q.prompts) && q.prompts.length > 0, `題目 ${q.id} prompts 至少需一題`);
     const jsNorm = normalizeText(q.answer_raw);
     assert.equal(jsNorm, q.answer_norm, `題目 ${q.id} 的 Python answer_norm 與 JS normalizeText 不一致`);
     const selfSim = calcSimilarity(q.answer_raw, q.answer_raw, q.answer_norm);
     assert.equal(selfSim.percent, 100, `題目 ${q.id} 原文貼上比對必須為 100%`);
   }
-  console.log(`PASS 6: data/questions.json (${questions.length} 題) Python/JS 正規化與 100% 自比對全數通過`);
+  console.log(`PASS 7: data/questions.json (${questions.length} 題) Python/JS 正規化與 100% 自比對全數通過`);
 }
