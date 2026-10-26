@@ -65,7 +65,17 @@ def normalize_text(text: str) -> str:
     # 3. NFKC 全形 -> 半形
     s = unicodedata.normalize("NFKC", s)
 
-    # 4. 移除行首列表編號（例如 "1. "、"- a. "、"  2. "）與行內 "(1)" 編號
+    # 4. 常見同義詞與原稿錯別字正規化（與前端 normalizeText 保持一致）
+    s = (
+        s.replace("經營撞點", "經營重點")
+        .replace("前途黷淡", "前途黯淡")
+        .replace("黯淡無光", "黯淡")
+        .replace("最佳捕鼠器", "較佳捕鼠器")
+        .replace("導向", "觀念")
+        .replace("以及", "及")
+    )
+
+    # 5. 移除行首列表編號（例如 "1. "、"- a. "、"  2. "）與行內 "(1)" 編號
     s = re.sub(
         r"(?m)^\s*(?:[-*>]+\s*)*(?:\d+\.|[a-zA-Z]\.)\s+",
         "",
@@ -73,7 +83,7 @@ def normalize_text(text: str) -> str:
     )
     s = re.sub(r"\(\d+\)", "", s)
 
-    # 5. 只保留中文字（基本漢字與擴展 A）及英數字元
+    # 6. 只保留中文字（基本漢字與擴展 A）及英數字元
     s = re.sub(r"[^\u3400-\u4dbf\u4e00-\u9fffA-Za-z0-9]+", "", s)
     return s
 
@@ -83,6 +93,7 @@ def clean_display_answer(raw_answer: str) -> str:
     清理顯示用的 answer_raw：
     移除 ![[...]]、*圖：...* 圖說行、以及 > [!note] 編輯備註，保留其餘原文排版與表格。
     """
+    raw_answer = raw_answer.replace("經營撞點", "經營重點").replace("前途黷淡", "前途黯淡")
     lines = []
     in_note_callout = False
     for line in raw_answer.splitlines():
